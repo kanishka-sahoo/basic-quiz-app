@@ -104,7 +104,7 @@ def mainmenu():
         screen.blit(mainmenu_quit, mainmenu_quit_rect)
 
         # add image
-        screen.blit(mainmenu_img_right, (700, 216))
+        screen.blit(mainmenu_img_right, (776, 216))
         
         # check for player interactions
         event_list = pygame.event.get()
