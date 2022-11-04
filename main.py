@@ -1,6 +1,7 @@
 '''
 Meme Quiz
 Author: 420s
+Copyright 2022. All rights reserved.
 '''
 import pygame, sys
 
@@ -18,14 +19,17 @@ font_roboto = "assets/ttf/roboto.ttf"
 
 # colours to use throughout game
 white = (255, 255, 255)
-green = (219, 245, 208)
+lightgreen = (219, 245, 208)
+lightred = (245, 219, 208)
+lightblue = (208, 219, 245)
+red = (255, 0, 0)
+green = (0, 255, 0)
 black = (0, 0, 0)
 blue = (0, 0, 255)
 
 # load splash screen
 splash_screen_image1 = pygame.image.load("assets/images/splash.png").convert()
 splash_screen_image2 = pygame.image.load("assets/images/splash2.png").convert()
-
 
 # global variables
 global doSFX, doBGM
@@ -62,6 +66,10 @@ def splash_screen():
 def mainmenu():
     '''Show the main menu'''
     game_mode = "main"
+
+    # load image
+    mainmenu_img_right = pygame.image.load("assets/images/128x128.png").convert()
+
     # initialise the font for main menu text
     mainmenu_font = pygame.font.Font(font_roboto, 128)
     mainmenu_font2 = pygame.font.Font(font_roboto, 64)
@@ -86,7 +94,7 @@ def mainmenu():
 
     while True:
         # create blank screen
-        screen.fill(green)
+        screen.fill(lightblue)
 
         # render menu options with text sprite and collision rects
         screen.blit(mainmenu_text, mainmenu_rect)
@@ -94,6 +102,9 @@ def mainmenu():
         screen.blit(mainmenu_start, mainmenu_start_rect)
         screen.blit(mainmenu_options, mainmenu_options_rect)
         screen.blit(mainmenu_quit, mainmenu_quit_rect)
+
+        # add image
+        screen.blit(mainmenu_img_right, (700, 216))
         
         # check for player interactions
         event_list = pygame.event.get()
@@ -133,8 +144,8 @@ def mainmenu():
 def surequit():
     game_mode = "surequit"
     # initialise text for quit screen
-    quit_font = pygame.font.Font(font_roboto, 72)
-    quit_font2 = pygame.font.Font(font_roboto, 48)
+    quit_font = pygame.font.Font(font_roboto, 84)
+    quit_font2 = pygame.font.Font(font_roboto, 64)
 
     # render menu options with text sprite and collision rects
     quit_text = quit_font.render('Are you sure you want to quit?', True, black)
@@ -147,14 +158,14 @@ def surequit():
     quit_yes_rect = quit_yes.get_rect()
 
     # define positions for rects
-    quit_text_rect.center = (640, 250)
-    quit_yes_rect.center = (320, 340)
-    quit_no_rect.center = (960, 340)
+    quit_text_rect.midleft = (60, 100)
+    quit_yes_rect.midleft = (60, 300)
+    quit_no_rect.midleft = (60, 400)
 
 
     while True:
         # create blank screen
-        screen.fill(green)
+        screen.fill(lightred)
 
         # render menu options
         screen.blit(quit_text, quit_text_rect)
@@ -223,7 +234,7 @@ def options_menu():
 
     while True:
         # create blank screen
-        screen.fill(green)
+        screen.fill(lightgreen)
 
         # render menu options with text sprite and collision rects
         screen.blit(options_text, options_rect)
@@ -270,6 +281,7 @@ def options_menu():
 splash_screen() # runs only once
 game_mode = "main"
 
+# This structure is used to avoid long function call stack
 while True: # the main app loop
 
     # main menu loop
@@ -280,6 +292,9 @@ while True: # the main app loop
     if game_mode == "options":
         game_mode = options_menu()
 
+    # ready to play screen
+    if game_mode == "readyplay":
+        pass
     # game screen loop
     if game_mode == "maingame":
         pass
@@ -292,9 +307,11 @@ while True: # the main app loop
     if game_mode == "endscreen":
         pass
     
+    # Are you sure you want to quit screen
     if game_mode == "surequit":
         game_mode = surequit()
 
+    # check events for quit action
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit() 
