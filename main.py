@@ -13,7 +13,8 @@ pygame.display.set_caption("Meme Quiz")
 FPS = 60
 clock = pygame.time.Clock()
 global game_mode
-game_mode = "splash"    # initialisd with splash screen
+game_mode = "splash"    # initialised with splash screen
+font_roboto = "assets/ttf/roboto.ttf"
 
 # colours to use throughout game
 white = (255, 255, 255)
@@ -24,6 +25,12 @@ blue = (0, 0, 255)
 # load splash screen
 splash_screen_image1 = pygame.image.load("assets/images/splash.png").convert()
 splash_screen_image2 = pygame.image.load("assets/images/splash2.png").convert()
+
+
+# global variables
+global doSFX, doBGM
+doSFX = True    # sound effects
+doBGM = True    # background music
 
 def splash_screen():
     '''renders splash screen, only for first boot '''
@@ -53,22 +60,26 @@ def splash_screen():
     
 
 def mainmenu():
+    '''Show the main menu'''
     game_mode = "main"
-    # initialise text for main menu
-    mainmenu_font = pygame.font.Font('assets/ttf/roboto.ttf', 128)
-    mainmenu_font2 = pygame.font.Font('assets/ttf/roboto.ttf', 64)
+    # initialise the font for main menu text
+    mainmenu_font = pygame.font.Font(font_roboto, 128)
+    mainmenu_font2 = pygame.font.Font(font_roboto, 64)
 
-    mainmenu_text = mainmenu_font.render('Main Menu', True, black)
+    # Create sprites from text
+    mainmenu_text = mainmenu_font.render('Meme Quiz', True, black)
     mainmenu_start = mainmenu_font2.render('Play', True, black)
     mainmenu_options = mainmenu_font2.render('Options', True, black)
     mainmenu_quit = mainmenu_font2.render('Quit', True, black)
 
+    # Get collision and position rects
     mainmenu_rect = mainmenu_text.get_rect()
     mainmenu_start_rect = mainmenu_start.get_rect()
     mainmenu_options_rect = mainmenu_options.get_rect()
     mainmenu_quit_rect = mainmenu_quit.get_rect()
 
-    mainmenu_rect.center = (380, 100)
+    # define positions for rects
+    mainmenu_rect.midleft = (60, 100)
     mainmenu_start_rect.midleft = (60, 300)
     mainmenu_options_rect.midleft = (60, 400)
     mainmenu_quit_rect.midleft = (60, 500)
@@ -77,7 +88,7 @@ def mainmenu():
         # create blank screen
         screen.fill(green)
 
-        # render menu options
+        # render menu options with text sprite and collision rects
         screen.blit(mainmenu_text, mainmenu_rect)
 
         screen.blit(mainmenu_start, mainmenu_start_rect)
@@ -88,7 +99,7 @@ def mainmenu():
         event_list = pygame.event.get()
 
         for event in event_list:
-            # mouse hover event
+            # mouse hover event, changes to different colour if mouse hovers
             if mainmenu_start_rect.collidepoint(pygame.mouse.get_pos()):
                 mainmenu_start = mainmenu_font2.render('Play', True, blue) 
             elif mainmenu_options_rect.collidepoint(pygame.mouse.get_pos()):
@@ -122,17 +133,20 @@ def mainmenu():
 def surequit():
     game_mode = "surequit"
     # initialise text for quit screen
-    quit_font = pygame.font.Font('assets/ttf/roboto.ttf', 72)
-    quit_font2 = pygame.font.Font('assets/ttf/roboto.ttf', 48)
+    quit_font = pygame.font.Font(font_roboto, 72)
+    quit_font2 = pygame.font.Font(font_roboto, 48)
 
+    # render menu options with text sprite and collision rects
     quit_text = quit_font.render('Are you sure you want to quit?', True, black)
     quit_yes = quit_font2.render('YES', True, black)
     quit_no = quit_font2.render('NO', True, black)
 
+    # Get collision and position rects
     quit_text_rect = quit_text.get_rect()
     quit_no_rect = quit_no.get_rect()
     quit_yes_rect = quit_yes.get_rect()
 
+    # define positions for rects
     quit_text_rect.center = (640, 250)
     quit_yes_rect.center = (320, 340)
     quit_no_rect.center = (960, 340)
@@ -179,6 +193,80 @@ def surequit():
         # update screen
         pygame.display.update()
         clock.tick(FPS)
+
+def options_menu():
+    '''Show options menu'''
+    game_mode = "options"
+    global doBGM
+    global doSFX
+    # initialise the font for main menu text
+    options_font = pygame.font.Font(font_roboto, 128)
+    options_font2 = pygame.font.Font(font_roboto, 64)
+
+    # Create sprites from text
+    options_text = options_font.render('Options', True, black)
+    options_doSFX = options_font2.render('Sound Effects: '+str(doSFX), True, black)
+    options_doBGM = options_font2.render('Background Music: '+str(doBGM), True, black)
+    options_goback = options_font2.render('Back', True, black)
+
+    # Get collision and position rects
+    options_rect = options_text.get_rect()
+    options_doSFX_rect = options_doSFX.get_rect()
+    options_doBGM_rect = options_doBGM.get_rect()
+    options_goback_rect = options_goback.get_rect()
+
+    # define positions for rects
+    options_rect.midleft = (60, 100)
+    options_doSFX_rect.midleft = (60, 300)
+    options_doBGM_rect.midleft = (60, 400)
+    options_goback_rect.midleft = (60, 650)
+
+    while True:
+        # create blank screen
+        screen.fill(green)
+
+        # render menu options with text sprite and collision rects
+        screen.blit(options_text, options_rect)
+
+        screen.blit(options_doSFX, options_doSFX_rect)
+        screen.blit(options_doBGM, options_doBGM_rect)
+        screen.blit(options_goback, options_goback_rect)
+        
+        # check for player interactions
+        event_list = pygame.event.get()
+
+        for event in event_list:
+            # mouse hover event, changes to different colour if mouse hovers
+            if options_doSFX_rect.collidepoint(pygame.mouse.get_pos()):
+                options_doSFX = options_font2.render('Sound Effects: '+str(doSFX), True, blue)
+            elif options_doBGM_rect.collidepoint(pygame.mouse.get_pos()):
+                options_doBGM = options_font2.render('Background Music: '+str(doBGM), True, blue)
+            elif options_goback_rect.collidepoint(pygame.mouse.get_pos()):
+                options_goback = options_font2.render('Back', True, blue)
+            else:
+                options_doSFX = options_font2.render('Sound Effects: '+str(doSFX), True, black)
+                options_doBGM = options_font2.render('Background Music: '+str(doBGM), True, black)
+                options_goback = options_font2.render('Back', True, black)
+
+            # mouse click event, check if user clicks on option
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if options_goback_rect.collidepoint(pygame.mouse.get_pos()):
+                    game_mode = "main"
+                elif options_doSFX_rect.collidepoint(pygame.mouse.get_pos()):
+                    doSFX = not doSFX
+                elif options_doBGM_rect.collidepoint(pygame.mouse.get_pos()):
+                    doBGM = not doBGM
+
+            if event.type == pygame.QUIT:
+                pygame.quit() 
+                sys.exit()
+        if game_mode in ["main"]:
+            return game_mode
+        
+        # update screen
+        pygame.display.update()
+        clock.tick(FPS)
+
 splash_screen() # runs only once
 game_mode = "main"
 
@@ -190,7 +278,7 @@ while True: # the main app loop
     
     # options menu loop
     if game_mode == "options":
-        pass
+        game_mode = options_menu()
 
     # game screen loop
     if game_mode == "maingame":
