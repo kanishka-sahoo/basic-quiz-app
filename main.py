@@ -31,6 +31,13 @@ blue = (0, 0, 255)
 splash_screen_image1 = pygame.image.load("assets/images/splash.png").convert()
 splash_screen_image2 = pygame.image.load("assets/images/splash2.png").convert()
 
+# load icons
+arrow_img = pygame.image.load("assets/icons/arrow-left.png").convert_alpha()
+cross_img = pygame.image.load("assets/icons/cross.png").convert_alpha()
+qmark_img = pygame.image.load("assets/icons/qmark.png").convert_alpha()
+tick_img = pygame.image.load("assets/icons/tick.png").convert_alpha()
+
+
 # global variables
 global doSFX, doBGM
 doSFX = True    # sound effects
@@ -125,7 +132,7 @@ def mainmenu():
             # mouse click event
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if mainmenu_start_rect.collidepoint(pygame.mouse.get_pos()):
-                    game_mode = "maingame"
+                    game_mode = "readyplay"
                 elif mainmenu_options_rect.collidepoint(pygame.mouse.get_pos()):
                     game_mode = "options"
                 elif mainmenu_quit_rect.collidepoint(pygame.mouse.get_pos()):
@@ -134,7 +141,7 @@ def mainmenu():
             if event.type == pygame.QUIT:
                 pygame.quit() 
                 sys.exit()
-        if game_mode in ["maingame", "options", "surequit"]:
+        if game_mode in ["readyplay", "options", "surequit"]:
             return game_mode
         
         # update screen
@@ -149,8 +156,8 @@ def surequit():
 
     # render menu options with text sprite and collision rects
     quit_text = quit_font.render('Are you sure you want to quit?', True, black)
-    quit_yes = quit_font2.render('YES', True, black)
-    quit_no = quit_font2.render('NO', True, black)
+    quit_yes = quit_font2.render('Yes', True, black)
+    quit_no = quit_font2.render('No', True, black)
 
     # Get collision and position rects
     quit_text_rect = quit_text.get_rect()
@@ -178,12 +185,12 @@ def surequit():
         for event in event_list:
             # mouse hover event
             if quit_no_rect.collidepoint(pygame.mouse.get_pos()):
-                quit_no = quit_font2.render('NO', True, blue)                
+                quit_no = quit_font2.render('No', True, blue)                
             elif quit_yes_rect.collidepoint(pygame.mouse.get_pos()):
-                quit_yes = quit_font2.render('YES', True, blue)
+                quit_yes = quit_font2.render('Yes', True, blue)
             else:
-                quit_yes = quit_font2.render('YES', True, black)
-                quit_no = quit_font2.render('NO', True, black)
+                quit_yes = quit_font2.render('Yes', True, black)
+                quit_no = quit_font2.render('No', True, black)
 
             # mouse click event
             if event.type == pygame.MOUSEBUTTONDOWN:
@@ -215,22 +222,22 @@ def options_menu():
     options_font2 = pygame.font.Font(font_roboto, 64)
 
     # Create sprites from text
+    options_exit_img = pygame.transform.scale(arrow_img, (64, 64))
     options_text = options_font.render('Options', True, black)
     options_doSFX = options_font2.render('Sound Effects: '+str(doSFX), True, black)
     options_doBGM = options_font2.render('Background Music: '+str(doBGM), True, black)
-    options_goback = options_font2.render('Back', True, black)
 
     # Get collision and position rects
+    options_exit_rect = options_exit_img.get_rect()
     options_rect = options_text.get_rect()
     options_doSFX_rect = options_doSFX.get_rect()
     options_doBGM_rect = options_doBGM.get_rect()
-    options_goback_rect = options_goback.get_rect()
 
     # define positions for rects
+    options_exit_rect.midleft = (60, 650)
     options_rect.midleft = (60, 100)
     options_doSFX_rect.midleft = (60, 300)
     options_doBGM_rect.midleft = (60, 400)
-    options_goback_rect.midleft = (60, 650)
 
     while True:
         # create blank screen
@@ -238,10 +245,9 @@ def options_menu():
 
         # render menu options with text sprite and collision rects
         screen.blit(options_text, options_rect)
-
+        screen.blit(options_exit_img, options_exit_rect)
         screen.blit(options_doSFX, options_doSFX_rect)
         screen.blit(options_doBGM, options_doBGM_rect)
-        screen.blit(options_goback, options_goback_rect)
         
         # check for player interactions
         event_list = pygame.event.get()
@@ -252,16 +258,13 @@ def options_menu():
                 options_doSFX = options_font2.render('Sound Effects: '+str(doSFX), True, blue)
             elif options_doBGM_rect.collidepoint(pygame.mouse.get_pos()):
                 options_doBGM = options_font2.render('Background Music: '+str(doBGM), True, blue)
-            elif options_goback_rect.collidepoint(pygame.mouse.get_pos()):
-                options_goback = options_font2.render('Back', True, blue)
             else:
                 options_doSFX = options_font2.render('Sound Effects: '+str(doSFX), True, black)
                 options_doBGM = options_font2.render('Background Music: '+str(doBGM), True, black)
-                options_goback = options_font2.render('Back', True, black)
-
+            
             # mouse click event, check if user clicks on option
             if event.type == pygame.MOUSEBUTTONDOWN:
-                if options_goback_rect.collidepoint(pygame.mouse.get_pos()):
+                if options_exit_rect.collidepoint(pygame.mouse.get_pos()):
                     game_mode = "main"
                 elif options_doSFX_rect.collidepoint(pygame.mouse.get_pos()):
                     doSFX = not doSFX
@@ -274,6 +277,70 @@ def options_menu():
         if game_mode in ["main"]:
             return game_mode
         
+        # update screen
+        pygame.display.update()
+        clock.tick(FPS)
+
+def readyplay():
+    '''ready to play screen'''
+    game_mode = "surequit"
+    # initialise ready to play screen
+    readyplay_font = pygame.font.Font(font_roboto, 84)
+    readyplay_font2 = pygame.font.Font(font_roboto, 64)
+
+    # render menu options with text sprite and collision rects
+    readyplay_text = readyplay_font.render('Are you ready to play?', True, black)
+    readyplay_yes = readyplay_font2.render('Yes', True, black)
+    readyplay_no = readyplay_font2.render('No', True, black)
+
+    # Get collision and position rects
+    readyplay_text_rect = readyplay_text.get_rect()
+    readyplay_no_rect = readyplay_no.get_rect()
+    readyplay_yes_rect = readyplay_yes.get_rect()
+
+    # define positions for rects
+    readyplay_text_rect.midleft = (60, 100)
+    readyplay_yes_rect.midleft = (60, 300)
+    readyplay_no_rect.midleft = (60, 400)
+
+
+    while True:
+        # create blank screen
+        screen.fill(lightred)
+
+        # render menu options
+        screen.blit(readyplay_text, readyplay_text_rect)
+        screen.blit(readyplay_yes, readyplay_yes_rect)
+        screen.blit(readyplay_no, readyplay_no_rect)
+
+        # check for player interactions
+        event_list = pygame.event.get()
+
+        for event in event_list:
+            # mouse hover event
+            if readyplay_no_rect.collidepoint(pygame.mouse.get_pos()):
+                readyplay_no = readyplay_font2.render('No', True, blue)                
+            elif readyplay_yes_rect.collidepoint(pygame.mouse.get_pos()):
+                readyplay_yes = readyplay_font2.render('Yes', True, blue)
+            else:
+                readyplay_yes = readyplay_font2.render('Yes', True, black)
+                readyplay_no = readyplay_font2.render('No', True, black)
+
+            # mouse click event
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if readyplay_no_rect.collidepoint(pygame.mouse.get_pos()):
+                    game_mode = "main"
+                elif readyplay_yes_rect.collidepoint(pygame.mouse.get_pos()):
+                    game_mode = "maingame"
+            
+            # press cross button
+            if event.type == pygame.QUIT:
+                pygame.quit() 
+                sys.exit()
+
+        if game_mode in ["main", "maingame"]:
+            return game_mode
+
         # update screen
         pygame.display.update()
         clock.tick(FPS)
@@ -294,7 +361,7 @@ while True: # the main app loop
 
     # ready to play screen
     if game_mode == "readyplay":
-        pass
+        game_mode = readyplay()
     # game screen loop
     if game_mode == "maingame":
         pass
