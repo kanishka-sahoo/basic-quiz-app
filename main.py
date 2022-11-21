@@ -42,7 +42,7 @@ doSFX = True    # sound effects
 doBGM = True    # background music
 
 def splash_screen():
-    '''renders splash screen, only for first boot '''
+    '''renders splash screen, on first launch'''
     # team intro scene
     for i in range(90):
         screen.fill(white)
@@ -133,6 +133,7 @@ def mainmenu():
         clock.tick(FPS)
 
 def surequit():
+    '''Show quit screen'''
     game_mode = "surequit"
     # initialise text for quit screen
     quit_font = pygame.font.Font(font_roboto, 84)
@@ -372,11 +373,11 @@ def maingame():
         
         # update question timer
         counter -= 1
-        print(counter)
         if counter == 0:
             counter = 60
             question_timer -= 1
         
+        # display updated timer screen
         maingame_timer = maingame_font2.render(str(question_timer), True, black)
         maingame_timer_rect = maingame_timer.get_rect()
         maingame_timer_rect.center = (640, 32)
