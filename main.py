@@ -345,6 +345,34 @@ def readyplay():
         pygame.display.update()
         clock.tick(FPS)
 
+def maingame():
+    '''Runs the main quiz'''
+    maingame_font1 = pygame.font.Font(font_roboto, 84)
+    maingame_font2 = pygame.font.Font(font_roboto, 32)
+    maingame_font3 = pygame.font.Font(font_roboto, 16)
+
+    while True:
+        screen.fill(lightblue)
+        event_list = pygame.event.get()
+        
+        for event in event_list:
+            # mouse hover event
+            
+        
+            # press cross button
+            if event.type == pygame.QUIT:
+                pygame.quit() 
+                sys.exit()
+        
+        if game_mode in ["main", "maingame"]:
+            return game_mode
+
+        # update screen
+        pygame.display.update()
+        clock.tick(FPS)
+
+
+
 splash_screen() # runs only once
 game_mode = "main"
 
@@ -364,7 +392,7 @@ while True: # the main app loop
         game_mode = readyplay()
     # game screen loop
     if game_mode == "maingame":
-        pass
+        game_mode = maingame()
 
     # pause menu loop
     if game_mode == "pause":
