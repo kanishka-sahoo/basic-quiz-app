@@ -1,5 +1,5 @@
 '''
-Meme Quiz
+Quiz
 Author: 420s
 Copyright 2022. All rights reserved.
 '''
@@ -10,7 +10,7 @@ pygame.init()
 
 # Create the window, saving it to a variable.
 screen = pygame.display.set_mode((1280, 720))
-pygame.display.set_caption("Meme Quiz")
+pygame.display.set_caption("Quiz")
 FPS = 60
 clock = pygame.time.Clock()
 global game_mode
@@ -29,14 +29,12 @@ blue = (0, 0, 255)
 
 # load splash screen
 splash_screen_image1 = pygame.image.load("assets/images/splash.png").convert()
-splash_screen_image2 = pygame.image.load("assets/images/splash2.png").convert()
 
 # load icons
 arrow_img = pygame.image.load("assets/icons/arrow-left.png").convert_alpha()
 cross_img = pygame.image.load("assets/icons/cross.png").convert_alpha()
 qmark_img = pygame.image.load("assets/icons/qmark.png").convert_alpha()
 tick_img = pygame.image.load("assets/icons/tick.png").convert_alpha()
-
 
 # global variables
 global doSFX, doBGM
@@ -57,19 +55,6 @@ def splash_screen():
                     sys.exit()
         clock.tick(FPS)
 
-    # project name screen
-    for i in range(90):
-        screen.fill(white)
-
-        screen.blit(splash_screen_image2, (0, 0))
-        pygame.display.update()
-        for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    pygame.quit() 
-                    sys.exit()
-        clock.tick(FPS)
-    
-
 def mainmenu():
     '''Show the main menu'''
     game_mode = "main"
@@ -82,7 +67,7 @@ def mainmenu():
     mainmenu_font2 = pygame.font.Font(font_roboto, 64)
 
     # Create sprites from text
-    mainmenu_text = mainmenu_font.render('Meme Quiz', True, black)
+    mainmenu_text = mainmenu_font.render('Quiz', True, black)
     mainmenu_start = mainmenu_font2.render('Play', True, black)
     mainmenu_options = mainmenu_font2.render('Options', True, black)
     mainmenu_quit = mainmenu_font2.render('Quit', True, black)
@@ -105,7 +90,6 @@ def mainmenu():
 
         # render menu options with text sprite and collision rects
         screen.blit(mainmenu_text, mainmenu_rect)
-
         screen.blit(mainmenu_start, mainmenu_start_rect)
         screen.blit(mainmenu_options, mainmenu_options_rect)
         screen.blit(mainmenu_quit, mainmenu_quit_rect)
@@ -303,7 +287,6 @@ def readyplay():
     readyplay_yes_rect.midleft = (60, 300)
     readyplay_no_rect.midleft = (60, 400)
 
-
     while True:
         # create blank screen
         screen.fill(lightred)
@@ -347,31 +330,65 @@ def readyplay():
 
 def maingame():
     '''Runs the main quiz'''
+    game_mode = "maingame"
     maingame_font1 = pygame.font.Font(font_roboto, 84)
-    maingame_font2 = pygame.font.Font(font_roboto, 32)
+    maingame_font2 = pygame.font.Font(font_roboto, 48)
     maingame_font3 = pygame.font.Font(font_roboto, 16)
 
+    # render menu options with text sprite and collision rects
+    maingame_question = maingame_font2.render('Q: 1', True, black)
+    maingame_timer = maingame_font2.render('60', True, black)
+    maingame_score = maingame_font2.render('Score: 0', True, black)
+
+    # Get collision and position rects
+    maingame_question_rect = maingame_question.get_rect()
+    maingame_timer_rect = maingame_timer.get_rect()
+    maingame_score_rect = maingame_score.get_rect()
+
+    # define positions for rects
+    maingame_question_rect.midleft = (48, 32)
+    maingame_timer_rect.center = (640, 32)
+    maingame_score_rect.midright = (1280-48, 32)
+
+    question_timer = 60 # in seconds
+    counter = 60 # in frames
     while True:
         screen.fill(lightblue)
         event_list = pygame.event.get()
         
+        screen.blit(maingame_score, maingame_score_rect)
+        screen.blit(maingame_question, maingame_question_rect)
         for event in event_list:
             # mouse hover event
-            
+
         
             # press cross button
             if event.type == pygame.QUIT:
                 pygame.quit() 
                 sys.exit()
         
-        if game_mode in ["main", "maingame"]:
+        if game_mode in ["main"]:
             return game_mode
+        
+        # update question timer
+        counter -= 1
+        print(counter)
+        if counter == 0:
+            counter = 60
+            question_timer -= 1
+        
+        maingame_timer = maingame_font2.render(str(question_timer), True, black)
+        maingame_timer_rect = maingame_timer.get_rect()
+        maingame_timer_rect.center = (640, 32)
+        
+        screen.blit(maingame_timer, maingame_timer_rect)
 
         # update screen
         pygame.display.update()
         clock.tick(FPS)
 
-
+def helpmenu():
+    '''Show help menu during main game'''
 
 splash_screen() # runs only once
 game_mode = "main"
