@@ -9,8 +9,8 @@ class QuizInterface:
     def __init__(self, quiz_brain: QuizBrain) -> None:
         self.quiz = quiz_brain
         self.window = Tk()
-        self.window.title("iQuiz App")
-        self.window.geometry("850x530")
+        self.window.title("Quiz App")
+        self.window.geometry("830x536")
 
         # Display Title
         self.display_title()
@@ -22,7 +22,7 @@ class QuizInterface:
                                                      width=680,
                                                      fill=THEME_COLOR,
                                                      font=(
-                                                         'Ariel', 15, 'italic')
+                                                         'roboto', 15, 'italic')
                                                      )
         self.canvas.grid(row=2, column=0, columnspan=2, pady=50)
         self.display_question()
@@ -48,7 +48,7 @@ class QuizInterface:
         """To display title"""
 
         # Title
-        title = Label(self.window, text="iQuiz Application",
+        title = Label(self.window, text="Quiz Application",
                       width=50, bg="green", fg="white", font=("ariel", 20, "bold"))
 
         # place of the title
