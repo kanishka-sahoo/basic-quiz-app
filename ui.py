@@ -1,6 +1,6 @@
 from tkinter import Tk, Canvas, StringVar, Label, Radiobutton, Button, messagebox
 from quiz import QuizBrain
-
+import time as tm
 THEME_COLOR = "#375362"
 
 
@@ -56,7 +56,7 @@ class QuizInterface:
 
     def display_question(self):
         """To display the question"""
-
+        tm.sleep(1)
         q_text = self.quiz.next_question()
         self.canvas.itemconfig(self.question_text, text=q_text)
 

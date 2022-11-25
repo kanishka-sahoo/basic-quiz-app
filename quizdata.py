@@ -1,9 +1,9 @@
 import requests
 
 parameters = {
-    "amount": 10,
+    "amount": 15,
     "type": "multiple",
-    "category": "12",
+    "category": "0",
     "difficulty": "easy"
 }
 
