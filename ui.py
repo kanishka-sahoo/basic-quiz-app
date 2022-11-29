@@ -49,14 +49,13 @@ class QuizInterface:
 
         # Title
         title = Label(self.window, text="Quiz Application",
-                      width=50, bg="green", fg="white", font=("ariel", 20, "bold"))
+                      width=50, bg="blue", fg="white", font=("ariel", 20, "bold"))
 
         # place of the title
         title.place(x=0, y=2)
 
     def display_question(self):
         """To display the question"""
-        tm.sleep(1)
         q_text = self.quiz.next_question()
         self.canvas.itemconfig(self.question_text, text=q_text)
 

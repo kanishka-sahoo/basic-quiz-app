@@ -3,7 +3,7 @@ import requests
 parameters = {
     "amount": 15,
     "type": "multiple",
-    "category": "0",
+    "category": "18",
     "difficulty": "easy"
 }
 
