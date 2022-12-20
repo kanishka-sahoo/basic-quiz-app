@@ -4,12 +4,12 @@ import time
 
 def register_user(usnm, pswd):
     users = []
-    pswd = hl.md5(pswd.encode()).hexdigest()
+    pswd = hl.md5(pswd.encode()).hexdigest()    # Converts the password to md5 hash
     time_create = time.time()
     conn = sqlite3.connect('accounts.db')
     c = conn.cursor()
     c.execute("INSERT INTO users (username, password, acc_created) VALUES (?, ?, ?)", 
-                (usnm, pswd, time_create))
+                (usnm, pswd, time_create))  # Stores the user data into the db
     conn.commit()
     conn.close()
 
@@ -21,12 +21,7 @@ def login_user(usnm, pswd):
     c.execute("SELECT * FROM users WHERE username=? AND password=?", (usnm, pswd))
     result = c.fetchone()
     conn.close()
-    if result:
-        conn = sqlite3.connect('accounts.db')
-        c = conn.cursor()
-        curr_time = time.time()
-        c.execute("UPDATE users SET last_played=? WHERE username=?", (curr_time, usnm))
-        res = c.fetchone()
+    if result:  # If user is present
         conn.close()
         return True, result
     else:
@@ -43,3 +38,13 @@ def is_user_present(usnm):
     else:
         return False
 
+def logout(usnm):
+    curr_time = time.time()
+    print(curr_time)
+    conn = sqlite3.connect('accounts.db')
+    c = conn.cursor()
+    c.execute(f"UPDATE users SET last_played=? WHERE username=?", (curr_time, usnm))
+    res = c.fetchone()
+    c.execute("SELECT * FROM users WHERE username=?", (usnm, ))
+    result = c.fetchone()
+    conn.close()

@@ -24,6 +24,7 @@ class MainApp():
         reg_login.grid(row=128, column=70, sticky="NW")
         reg_login.place(x=0, y=0)
 
+        # Adds the Welcome Text
         loggedout = tk.Label(master=reg_login, text="Welcome to Quiz", font=("ariel", 32, "bold"), bg="#d9d9d9")
         loggedout.place(relx=0.5, rely=0.1, anchor=tk.CENTER)
 
@@ -62,6 +63,8 @@ class MainApp():
                 message.set("Password must be 6 characters or more")
             elif pswd.isalnum():
                 message.set("Password must contain atleast 1 special character")
+            elif ";" in pswd:
+                message.set("Password not accepted")
             else:
                 adh.register_user(usnm=usnm, pswd=pswd)
                 self.login()
@@ -176,7 +179,10 @@ class MainApp():
 
         def go_to_start():
             pass
-
+        def do_logout():
+            adh.logout(usr[0])
+            self.reg_or_login()
+        
         main_screen_body = tk.Frame(master=self.master, background="#d9d9d9", width=1280, height=720)
         main_screen_body.grid(row=128, column=70, sticky="NW")
         main_screen_body.place(x=0, y=0)
@@ -194,7 +200,7 @@ class MainApp():
         acc_ctn.place(relx=0.5, rely=0.3, anchor=tk.CENTER)
 
         # Takes user to logout page
-        logout_btn = tk.Button(master=main_screen_body, text="Logout", width=10, font=("ariel", 16, "bold"), command=self.reg_or_login)
+        logout_btn = tk.Button(master=main_screen_body, text="Logout", width=10, font=("ariel", 16, "bold"), command=do_logout)
         logout_btn.place(relx=0.9, rely=0.1, anchor=tk.CENTER)
 
         # Header of categories selection page
