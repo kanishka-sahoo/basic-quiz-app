@@ -22,6 +22,12 @@ def login_user(usnm, pswd):
     result = c.fetchone()
     conn.close()
     if result:
+        conn = sqlite3.connect('accounts.db')
+        c = conn.cursor()
+        curr_time = time.time()
+        c.execute("UPDATE users SET last_played=? WHERE username=?", (curr_time, usnm))
+        res = c.fetchone()
+        conn.close()
         return True, result
     else:
         return False, result

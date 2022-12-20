@@ -61,7 +61,7 @@ class MainApp():
             elif len(pswd) < 6:
                 message.set("Password must be 6 characters or more")
             elif pswd.isalnum():
-                message.set("Password must contain atleast 1 special characteer")
+                message.set("Password must contain atleast 1 special character")
             else:
                 adh.register_user(usnm=usnm, pswd=pswd)
                 self.login()
@@ -174,6 +174,9 @@ class MainApp():
         for i in self.master.winfo_children():
             i.destroy()
 
+        def go_to_start():
+            pass
+
         main_screen_body = tk.Frame(master=self.master, background="#d9d9d9", width=1280, height=720)
         main_screen_body.grid(row=128, column=70, sticky="NW")
         main_screen_body.place(x=0, y=0)
@@ -185,14 +188,50 @@ class MainApp():
         parsed_time = dt.datetime.fromtimestamp(float(usr[-1]))
         acc_ctn = tk.Label(master=main_screen_body, text=f"Account created: {parsed_time}", font=("ariel", 16, "bold"), bg="#d9d9d9")
         acc_ctn.place(relx=0.5, rely=0.2, anchor=tk.CENTER)
+        
+        parsed_time = dt.datetime.fromtimestamp(float(usr[-2]))
+        acc_ctn = tk.Label(master=main_screen_body, text=f"Last Login: {parsed_time}", font=("ariel", 16, "bold"), bg="#d9d9d9")
+        acc_ctn.place(relx=0.5, rely=0.3, anchor=tk.CENTER)
 
         # Takes user to logout page
         logout_btn = tk.Button(master=main_screen_body, text="Logout", width=10, font=("ariel", 16, "bold"), command=self.reg_or_login)
         logout_btn.place(relx=0.9, rely=0.1, anchor=tk.CENTER)
 
         # Header of categories selection page
-        opts_head = tk.Label(master=main_screen_body, text="Select Categories", font=("ariel", 24, "normal"), bg="#d9d9d9")
-        opts_head.place(relx=0.2, rely=0.3, anchor=tk.CENTER)
+        opts_head = tk.Label(master=main_screen_body, text="Select Category", font=("ariel", 24, "normal"), bg="#d9d9d9")
+        opts_head.place(relx=0.1, rely=0.4, anchor=tk.W)
+
+        # Add disclaimer regarding number of categories can only be 1
+        catg_discl = tk.Label(master=main_screen_body, text="Note: There can only be one category \nselected at one time.", font=("ariel", 16, "normal"), bg="#d9d9d9")
+        catg_discl.place(relx=0.1, rely=0.45, anchor=tk.NW)
+
+        # Category selection menu (dropdown)
+        CATEGORIES = [
+            "Entertainment",
+            "Sports",
+            "Computers"
+        ]
+        sel_cat = tk.StringVar()
+        sel_cat.set("Select Category")
+
+        cat_dd = tk.OptionMenu(main_screen_body, sel_cat, *CATEGORIES)
+        cat_dd.place(relx=0.1, rely=0.55, anchor=tk.NW)
+
+        # Header of Difficulty selection area
+        diff_head = tk.Label(master=main_screen_body, text="Select Difficulty", font=("ariel", 24, "normal"), bg="#d9d9d9")
+        diff_head.place(relx=0.6, rely=0.4, anchor=tk.W)
+        
+        DIFFICULTIES = [
+            "Hard",
+            "Medium",
+            "Easy"
+        ]
+        sel_diff = tk.StringVar()
+        sel_diff.set("Select Difficulty")
+
+        sel_dd = tk.OptionMenu(main_screen_body, sel_diff, *DIFFICULTIES)
+        sel_dd.place(relx=0.6, rely=0.55, anchor=tk.NW)
+
 
         # Start Buttton, takes user to staging area, where rules are shown
         stg_ar = tk.Button(master=main_screen_body, text="Start", width=10, font=("ariel", 16, "bold"))
