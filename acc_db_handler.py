@@ -3,7 +3,6 @@ import sqlite3
 import time
 
 def register_user(usnm, pswd):
-    users = []
     pswd = hl.md5(pswd.encode()).hexdigest()    # Converts the password to md5 hash
     time_create = time.time()
     conn = sqlite3.connect('accounts.db')
@@ -14,7 +13,6 @@ def register_user(usnm, pswd):
     conn.close()
 
 def login_user(usnm, pswd):
-    users = []
     pswd = hl.md5(pswd.encode()).hexdigest()
     conn = sqlite3.connect('accounts.db')
     c = conn.cursor()
@@ -22,7 +20,6 @@ def login_user(usnm, pswd):
     result = c.fetchone()
     conn.close()
     if result:  # If user is present
-        conn.close()
         return True, result
     else:
         return False, result
