@@ -8,4 +8,4 @@ frame3 = ttk.Frame(a)
 frame4 = ttk.Frame(a)
 frame5 = ttk.Frame(a)
 
-root = ttk.Frame(a)
+root = ttk.Frame(a) # 
