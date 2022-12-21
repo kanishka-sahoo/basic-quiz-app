@@ -9,7 +9,7 @@ class QuizInterface:
     def __init__(self, quiz_brain: QuizBrain) -> None:
         self.quiz = quiz_brain
         self.window = Tk()
-        self.window.title("Python quiz")
+        self.window.title("Python Quiz")
         self.window.geometry("830x536")
 
         # Display Title
