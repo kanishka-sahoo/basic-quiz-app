@@ -259,10 +259,26 @@ class MainApp():
         sel_dd = tk.OptionMenu(main_screen_body, sel_diff, *DIFFICULTIES)
         sel_dd.place(relx=0.6, rely=0.55, anchor=tk.NW)
 
+        # Leaderboards button
+        lebd_btn = tk.Button(master=main_screen_body, text="Leaderboards", width=12, font=("ariel", 16, "bold"))
+        lebd_btn.place(relx=0.1, rely=0.1, anchor=tk.CENTER)
 
         # Start Buttton, takes user to staging area, where rules are shown
         stg_ar = tk.Button(master=main_screen_body, text="Start", width=10, font=("ariel", 16, "bold"))
-        stg_ar.place(relx=0.7, rely=0.9, anchor=tk.CENTER)
+        stg_ar.place(relx=0.9, rely=0.9, anchor=tk.CENTER)
+    
+    def leaderboards(self): # To be done
+        for i in self.master.winfo_children():
+            i.destroy()
+
+    def rules_area(self):   # Where rules are explained
+        for i in self.master.winfo_children():
+            i.destroy()
+
+    def main_quiz(self): # Main quiz area
+        for i in self.master.winfo_children():
+            i.destroy()
+           
 
 # Run the actual app
 root = tk.Tk()
