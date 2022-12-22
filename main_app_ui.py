@@ -36,6 +36,9 @@ class MainApp():
 
         reg_btn = tk.Button(master=reg_login, text="Register", width=10, font=("ariel", 16, "bold"), command=self.register)
         reg_btn.place(relx=0.4, rely=0.5, anchor=tk.CENTER)
+
+        cred_btn = tk.Button(master=reg_login, text="Credits", width=10, font=("ariel", 16, "bold"), command=self.credits)
+        cred_btn.place(relx=0.5, rely=0.9, anchor=tk.CENTER)
     
     def register(self):
         for i in self.master.winfo_children():
@@ -173,6 +176,21 @@ class MainApp():
         val_usr = tk.Label(master=login_body, textvariable=message, font=("ariel", 24, "bold"), bg="#d9d9d9")
         val_usr.place(relx=0.5, rely=0.85, anchor=tk.CENTER)
 
+    def credits(self):
+        for i in self.master.winfo_children():
+            i.destroy()
+        credits_body = tk.Frame(master=self.master, background="#d9d9d9", width=1280, height=720)
+        credits_body.grid(row=128, column=70, sticky="NW")
+        credits_body.place(x=0, y=0)
+
+        # Title
+        cred_title = tk.Label(master=credits_body, text="Credits", font=("ariel", 32, "bold"), bg="#d9d9d9")
+        cred_title.place(relx=0.5, rely=0.1, anchor=tk.CENTER)
+
+        # Back Button
+        back_btn = tk.Button(master=credits_body, text="Back", width=10, font=("ariel", 16, "bold"), command=self.reg_or_login)
+        back_btn.place(relx=0.1, rely=0.1, anchor=tk.CENTER) 
+
     def main_screen(self, usr):
         for i in self.master.winfo_children():
             i.destroy()
@@ -213,7 +231,7 @@ class MainApp():
 
         # Category selection menu (dropdown)
         CATEGORIES = [
-            "Entertainment",
+            "General Knowledge",
             "Sports",
             "Computers"
         ]
