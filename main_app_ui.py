@@ -186,7 +186,10 @@ class MainApp():
         # Title
         cred_title = tk.Label(master=credits_body, text="Credits", font=("ariel", 32, "bold"), bg="#d9d9d9")
         cred_title.place(relx=0.5, rely=0.1, anchor=tk.CENTER)
-
+        # Text
+        credits_text = """Kanishka Sahoo: App Framework\nBhuvan Anand: ---\nMadhav: ---"""
+        cred_text = tk.Label(master=credits_body, text=credits_text, font=("ariel", 24, ), bg="#d9d9d9")
+        cred_text.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
         # Back Button
         back_btn = tk.Button(master=credits_body, text="Back", width=10, font=("ariel", 16, "bold"), command=self.reg_or_login)
         back_btn.place(relx=0.1, rely=0.1, anchor=tk.CENTER) 
