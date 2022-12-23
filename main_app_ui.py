@@ -31,14 +31,14 @@ class MainApp():
         loggedout2 = tk.Label(master=reg_login, text="You are not logged in.", font=("ariel", 24, "bold"), bg="#d9d9d9")
         loggedout2.place(relx=0.5, rely=0.2, anchor=tk.CENTER)
 
-        login_btn = tk.Button(master=reg_login, text="Login", width=10, font=("ariel", 16, "bold"), command=self.login)
-        login_btn.place(relx=0.6, rely=0.5, anchor=tk.CENTER)
+        login_btn = tk.Button(master=reg_login, text="Login", width=20, font=("ariel", 16, "bold"), command=self.login)
+        login_btn.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
 
-        reg_btn = tk.Button(master=reg_login, text="Register", width=10, font=("ariel", 16, "bold"), command=self.register)
-        reg_btn.place(relx=0.4, rely=0.5, anchor=tk.CENTER)
+        reg_btn = tk.Button(master=reg_login, text="Register", width=20, font=("ariel", 16, "bold"), command=self.register)
+        reg_btn.place(relx=0.5, rely=0.6, anchor=tk.CENTER)
 
-        cred_btn = tk.Button(master=reg_login, text="Credits", width=10, font=("ariel", 16, "bold"), command=self.credits)
-        cred_btn.place(relx=0.5, rely=0.9, anchor=tk.CENTER)
+        cred_btn = tk.Button(master=reg_login, text="Credits", width=20, font=("ariel", 16, "bold"), command=self.credits)
+        cred_btn.place(relx=0.5, rely=0.7, anchor=tk.CENTER)
     
     def register(self):
         for i in self.master.winfo_children():
