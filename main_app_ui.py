@@ -127,7 +127,8 @@ class MainApp():
             if usnm == '' or password == '':
                 message.set("Please Enter Details")
             elif isCorrect:
-                self.main_screen(usr)
+                self.usr = usr
+                self.main_screen()
             else:
                 message.set("Username and/or password is wrong")
 
@@ -188,13 +189,15 @@ class MainApp():
         cred_title.place(relx=0.5, rely=0.1, anchor=tk.CENTER)
         # Text
         credits_text = """Kanishka Sahoo: App Framework\nBhuvan Anand: ---\nMadhav: ---"""
-        cred_text = tk.Label(master=credits_body, text=credits_text, font=("ariel", 24, ), bg="#d9d9d9")
+        cred_text = tk.Label(master=credits_body, text=credits_text,font=("ariel", 24, ), bg="#d9d9d9", height=5, width=52)
         cred_text.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
+
         # Back Button
         back_btn = tk.Button(master=credits_body, text="Back", width=10, font=("ariel", 16, "bold"), command=self.reg_or_login)
         back_btn.place(relx=0.1, rely=0.1, anchor=tk.CENTER) 
 
-    def main_screen(self, usr):
+    def main_screen(self):
+        usr = self.usr
         for i in self.master.winfo_children():
             i.destroy()
 
@@ -212,25 +215,20 @@ class MainApp():
         log_txt = tk.Label(master=main_screen_body, text=f"Welcome, {usr[0]}", font=("ariel", 32, "bold"), bg="#d9d9d9")
         log_txt.place(relx=0.5, rely=0.1, anchor=tk.CENTER)
 
-        parsed_time = dt.datetime.fromtimestamp(float(usr[-1]))
-        acc_ctn = tk.Label(master=main_screen_body, text=f"Account created: {parsed_time}", font=("ariel", 16, "bold"), bg="#d9d9d9")
-        acc_ctn.place(relx=0.5, rely=0.2, anchor=tk.CENTER)
-        
-        parsed_time = dt.datetime.fromtimestamp(float(usr[-2]))
-        acc_ctn = tk.Label(master=main_screen_body, text=f"Last Login: {parsed_time}", font=("ariel", 16, "bold"), bg="#d9d9d9")
-        acc_ctn.place(relx=0.5, rely=0.3, anchor=tk.CENTER)
-
+        # Displays current Score
+        score_text = tk.Label(master=main_screen_body, text=f"Score: {usr[2]}", font=("ariel", 32, "bold"), bg="#d9d9d9")
+        score_text.place(relx=0.5, rely=0.2, anchor=tk.CENTER)
         # Takes user to logout page
         logout_btn = tk.Button(master=main_screen_body, text="Logout", width=10, font=("ariel", 16, "bold"), command=do_logout)
         logout_btn.place(relx=0.9, rely=0.1, anchor=tk.CENTER)
 
         # Header of categories selection page
         opts_head = tk.Label(master=main_screen_body, text="Select Category", font=("ariel", 24, "normal"), bg="#d9d9d9")
-        opts_head.place(relx=0.1, rely=0.4, anchor=tk.W)
+        opts_head.place(relx=0.1, rely=0.3, anchor=tk.W)
 
         # Add disclaimer regarding number of categories can only be 1
         catg_discl = tk.Label(master=main_screen_body, text="Note: There can only be one category \nselected at one time.", font=("ariel", 16, "normal"), bg="#d9d9d9")
-        catg_discl.place(relx=0.1, rely=0.45, anchor=tk.NW)
+        catg_discl.place(relx=0.1, rely=0.35, anchor=tk.NW)
 
         # Category selection menu (dropdown)
         CATEGORIES = [
@@ -238,47 +236,76 @@ class MainApp():
             "Sports",
             "Computers"
         ]
-        sel_cat = tk.StringVar()
-        sel_cat.set("Select Category")
+        self.sel_cat = tk.StringVar()
+        self.sel_cat.set("Select Category")
 
-        cat_dd = tk.OptionMenu(main_screen_body, sel_cat, *CATEGORIES)
-        cat_dd.place(relx=0.1, rely=0.55, anchor=tk.NW)
+        cat_dd = tk.OptionMenu(main_screen_body, self.sel_cat, *CATEGORIES)
+        cat_dd.place(relx=0.1, rely=0.45, anchor=tk.NW)
 
         # Header of Difficulty selection area
         diff_head = tk.Label(master=main_screen_body, text="Select Difficulty", font=("ariel", 24, "normal"), bg="#d9d9d9")
-        diff_head.place(relx=0.6, rely=0.4, anchor=tk.W)
+        diff_head.place(relx=0.6, rely=0.3, anchor=tk.W)
         
         DIFFICULTIES = [
             "Hard",
             "Medium",
             "Easy"
         ]
-        sel_diff = tk.StringVar()
-        sel_diff.set("Select Difficulty")
+        self.sel_diff = tk.StringVar()
+        self.sel_diff.set("Select Difficulty")
 
-        sel_dd = tk.OptionMenu(main_screen_body, sel_diff, *DIFFICULTIES)
-        sel_dd.place(relx=0.6, rely=0.55, anchor=tk.NW)
+        sel_dd = tk.OptionMenu(main_screen_body, self.sel_diff, *DIFFICULTIES)
+        sel_dd.place(relx=0.6, rely=0.45, anchor=tk.NW)
+
+        # Add number of questions slider
+        ques_txt = tk.Label(master=main_screen_body, text="Select Questions (1 to 50)", font=("ariel", 24, "normal"), bg="#d9d9d9")
+        ques_txt.place(relx=0.6, rely=0.55, anchor=tk.NW)
+
+        self.ques_no = tk.StringVar()
+        ques_no = tk.Entry(master=main_screen_body, width=27, font=("ariel", 24), textvariable=self.ques_no)
+        ques_no.place(relx=0.6, rely=0.65, anchor=tk.NW)
 
         # Leaderboards button
         lebd_btn = tk.Button(master=main_screen_body, text="Leaderboards", width=12, font=("ariel", 16, "bold"))
         lebd_btn.place(relx=0.1, rely=0.1, anchor=tk.CENTER)
 
-        # Start Buttton, takes user to staging area, where rules are shown
-        stg_ar = tk.Button(master=main_screen_body, text="Start", width=10, font=("ariel", 16, "bold"))
+        # Continue Buttton, takes user to staging area
+        stg_ar = tk.Button(master=main_screen_body, text="Continue", width=10, font=("ariel", 16, "bold"), command=self.staging_area)
         stg_ar.place(relx=0.9, rely=0.9, anchor=tk.CENTER)
     
     def leaderboards(self): # To be done
         for i in self.master.winfo_children():
             i.destroy()
 
-    def rules_area(self):   # Where rules are explained
+    def staging_area(self):   # Where rules are explained
         for i in self.master.winfo_children():
             i.destroy()
+        
+        staging_area = tk.Frame(master=self.master, background="#d9d9d9", width=1280, height=720)
+        staging_area.grid(row=128, column=70, sticky="NW")
+        staging_area.place(x=0, y=0)
+
+        head_txt = tk.Label(master=staging_area, text="Confirm: ", font=("ariel", 32, "bold"), bg="#d9d9d9")
+        head_txt.place(relx=0.5, rely=0.1, anchor=tk.CENTER)
+        
+        # Show data for confirmation
+        cat_cnf = tk.Label(master=staging_area, text=f"Selected Category: {self.sel_cat.get()}", font=("ariel", 22, ), bg="#d9d9d9")
+        cat_cnf.place(relx=0.5, rely=0.3, anchor=tk.CENTER) 
+        diff_cnf = tk.Label(master=staging_area, text=f"Selected Difficulty: {self.sel_diff.get()}", font=("ariel", 22, ), bg="#d9d9d9")
+        diff_cnf.place(relx=0.5, rely=0.4, anchor=tk.CENTER) 
+        quno_cnf = tk.Label(master=staging_area, text=f"Number of Questions: {self.ques_no.get()}", font=("ariel", 22, ), bg="#d9d9d9")
+        quno_cnf.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
+
+        back_btn = tk.Button(master=staging_area, text="Back", width=10, font=("ariel", 16, "bold"), command=self.main_screen)
+        back_btn.place(relx=0.1, rely=0.1, anchor=tk.CENTER)
+
+        confirm_button = tk.Button(master=staging_area, text="Confirm", width=10, font=("ariel", 16, "bold"), command=self.main_quiz)
+        confirm_button.place(relx=0.9, rely=0.9, anchor=tk.CENTER)
 
     def main_quiz(self): # Main quiz area
         for i in self.master.winfo_children():
             i.destroy()
-           
+        
 
 # Run the actual app
 root = tk.Tk()
