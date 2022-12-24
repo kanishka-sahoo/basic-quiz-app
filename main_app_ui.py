@@ -188,7 +188,7 @@ class MainApp():
         cred_title = tk.Label(master=credits_body, text="Credits", font=("ariel", 32, "bold"), bg="#d9d9d9")
         cred_title.place(relx=0.5, rely=0.1, anchor=tk.CENTER)
         # Text
-        credits_text = """Kanishka Sahoo: App Framework\nBhuvan Anand: ---\nMadhav: ---"""
+        credits_text = """Kanishka Sahoo: App Framework\nBhuvan Anand: ---\nMadhav Nair: ---"""
         cred_text = tk.Label(master=credits_body, text=credits_text,font=("ariel", 24, ), bg="#d9d9d9", height=5, width=52)
         cred_text.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
 
@@ -201,8 +201,18 @@ class MainApp():
         for i in self.master.winfo_children():
             i.destroy()
 
-        def go_to_start():
-            pass
+        def go_to_start():  # Checks for the neccessary condition to start i.e. all the options are validated.
+            if self.ques_no.get().isnumeric():
+                if int(self.ques_no.get()) <= 50 or int(self.ques_no.get()) >= 1:
+                    if self.sel_cat.get() == "Select Category" or self.sel_diff == "Select Difficulty":
+                        prmp_txt.set("Did not enter options")
+                    else:
+                        self.staging_area()
+                else:
+                    prmp_txt.set("Number entered out of range")
+            else:
+                prmp_txt.set("Did not enter a number")
+        
         def do_logout():
             adh.logout(usr[0])
             self.reg_or_login()
@@ -262,16 +272,21 @@ class MainApp():
         ques_txt.place(relx=0.6, rely=0.55, anchor=tk.NW)
 
         self.ques_no = tk.StringVar()
-        ques_no = tk.Entry(master=main_screen_body, width=27, font=("ariel", 24), textvariable=self.ques_no)
-        ques_no.place(relx=0.6, rely=0.65, anchor=tk.NW)
+        ques_no_box = tk.Entry(master=main_screen_body, width=10, font=("ariel", 24), textvariable=self.ques_no)
+        ques_no_box.place(relx=0.6, rely=0.65, anchor=tk.NW)
 
         # Leaderboards button
         lebd_btn = tk.Button(master=main_screen_body, text="Leaderboards", width=12, font=("ariel", 16, "bold"))
         lebd_btn.place(relx=0.1, rely=0.1, anchor=tk.CENTER)
 
         # Continue Buttton, takes user to staging area
-        stg_ar = tk.Button(master=main_screen_body, text="Continue", width=10, font=("ariel", 16, "bold"), command=self.staging_area)
+        stg_ar = tk.Button(master=main_screen_body, text="Continue", width=10, font=("ariel", 16, "bold"), command=go_to_start)
         stg_ar.place(relx=0.9, rely=0.9, anchor=tk.CENTER)
+
+        # Prompt text
+        prmp_txt = tk.StringVar()
+        prmp = tk.Label(master=main_screen_body, textvariable=prmp_txt, bg="#d9d9d9", font=("ariel", 16, "bold"))
+        prmp.place(relx=0.6, rely=0.75, anchor=tk.NW)
     
     def leaderboards(self): # To be done
         for i in self.master.winfo_children():
