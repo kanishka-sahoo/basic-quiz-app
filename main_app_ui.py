@@ -9,12 +9,12 @@ import sys
 import acc_db_handler as adh
 import datetime as dt
 import questions_handler as qh
-
 class MainApp():
     def __init__(self, master) -> None:
         self.master = master
         self.master.title("Python Quiz")
         self.master.geometry("1280x720")
+        self.master.resizable(False, False)
         self.reg_or_login()
 
     def reg_or_login(self):
@@ -321,11 +321,11 @@ class MainApp():
         
         # Show data for confirmation
         cat_cnf = tk.Label(master=staging_area, text=f"Selected Category: {self.sel_cat.get()}", font=("ariel", 22, ), bg="#d9d9d9")
-        cat_cnf.place(relx=0.5, rely=0.3, anchor=tk.CENTER) 
+        cat_cnf.place(relx=0.3, rely=0.3, anchor=tk.W) 
         diff_cnf = tk.Label(master=staging_area, text=f"Selected Difficulty: {self.sel_diff.get()}", font=("ariel", 22, ), bg="#d9d9d9")
-        diff_cnf.place(relx=0.5, rely=0.4, anchor=tk.CENTER) 
+        diff_cnf.place(relx=0.3, rely=0.4, anchor=tk.W) 
         quno_cnf = tk.Label(master=staging_area, text=f"Number of Questions: {self.ques_no.get()}", font=("ariel", 22, ), bg="#d9d9d9")
-        quno_cnf.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
+        quno_cnf.place(relx=0.3, rely=0.5, anchor=tk.W)
 
         back_btn = tk.Button(master=staging_area, text="Back", width=10, font=("ariel", 16, "bold"), command=self.main_screen)
         back_btn.place(relx=0.1, rely=0.1, anchor=tk.CENTER)
@@ -354,10 +354,11 @@ class MainApp():
         quit_btn.place(relx=0.1, rely=0.05, anchor=tk.CENTER)     
 
         question_text = tk.StringVar()
-        question_text.set("Q: Lorem Ipsum")
+        question_text.set("Lorem Ipsum\ntest test")
 
-        question_ = tk.Label(master=main_quiz, textvariable=question_text, font=("ariel", 22, ), bg="#d9d9d9")
-        question_.place(relx=0.3, rely=0.3, anchor=tk.NW)
+        question_ = tk.Label(master=main_quiz, textvariable=question_text, font=("ariel", 22, ), bg="#d9d9d9", justify=tk.LEFT)
+        question_.place(relx=0.15, rely=0.2, anchor=tk.NW)
+
 
 # Run the actual app
 root = tk.Tk()
