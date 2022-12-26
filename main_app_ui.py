@@ -9,7 +9,6 @@ import sys
 import acc_db_handler as adh
 import datetime as dt
 
-tk.Tk().iconbitmap
 class MainApp():
     def __init__(self, master) -> None:
         self.master = master
