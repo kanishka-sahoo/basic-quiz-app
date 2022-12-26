@@ -9,6 +9,7 @@ import sys
 import acc_db_handler as adh
 import datetime as dt
 
+tk.Tk().iconbitmap
 class MainApp():
     def __init__(self, master) -> None:
         self.master = master
@@ -188,7 +189,7 @@ class MainApp():
         cred_title = tk.Label(master=credits_body, text="Credits", font=("ariel", 32, "bold"), bg="#d9d9d9")
         cred_title.place(relx=0.5, rely=0.1, anchor=tk.CENTER)
         # Text
-        credits_text = """Kanishka Sahoo: App Framework\nBhuvan Anand: ---\nMadhav Nair: ---"""
+        credits_text = """Kanishka Sahoo: Pretty Much Everything\nBhuvan Anand: ---\nMadhav Nair: ---"""
         cred_text = tk.Label(master=credits_body, text=credits_text,font=("ariel", 24, ), bg="#d9d9d9", height=5, width=52)
         cred_text.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
 
@@ -201,6 +202,8 @@ class MainApp():
         for i in self.master.winfo_children():
             i.destroy()
 
+        def do_leaderboard():
+            self.leaderboards(usr[0])
         def go_to_start():  # Checks for the neccessary condition to start i.e. all the options are validated.
             if self.ques_no.get().isnumeric():
                 if int(self.ques_no.get()) <= 50 or int(self.ques_no.get()) >= 1:
@@ -214,7 +217,6 @@ class MainApp():
                 prmp_txt.set("Did not enter a number")
         
         def do_logout():
-            adh.logout(usr[0])
             self.reg_or_login()
         
         main_screen_body = tk.Frame(master=self.master, background="#d9d9d9", width=1280, height=720)
@@ -276,7 +278,7 @@ class MainApp():
         ques_no_box.place(relx=0.6, rely=0.65, anchor=tk.NW)
 
         # Leaderboards button
-        lebd_btn = tk.Button(master=main_screen_body, text="Leaderboards", width=12, font=("ariel", 16, "bold"))
+        lebd_btn = tk.Button(master=main_screen_body, text="Leaderboards", width=12, font=("ariel", 16, "bold"), command=do_leaderboard)
         lebd_btn.place(relx=0.1, rely=0.1, anchor=tk.CENTER)
 
         # Continue Buttton, takes user to staging area
@@ -288,9 +290,23 @@ class MainApp():
         prmp = tk.Label(master=main_screen_body, textvariable=prmp_txt, bg="#d9d9d9", font=("ariel", 16, "bold"))
         prmp.place(relx=0.6, rely=0.75, anchor=tk.NW)
     
-    def leaderboards(self): # To be done
+    def leaderboards(self, usr): # To be done
         for i in self.master.winfo_children():
             i.destroy()
+
+        def do_back():
+            self.main_screen()
+        
+        leader_board = tk.Frame(master=self.master, background="#d9d9d9", width=1280, height=720)
+        leader_board.grid(row=128, column=70, sticky="NW")
+        leader_board.place(x=0, y=0)
+
+        title_label = tk.Label(master=leader_board, text="Leaderboard", bg="#d9d9d9", font=("ariel", 32, "bold"))
+        title_label.place(relx=0.5, rely=0.1, anchor=tk.CENTER)
+
+        back_btn = tk.Button(master=leader_board, text="BACK", width=10, font=("ariel", 16, "bold"), command=do_back)
+        back_btn.place(relx=0.1, rely=0.1, anchor=tk.CENTER)
+
 
     def staging_area(self):   # Where rules are explained
         for i in self.master.winfo_children():
@@ -320,6 +336,13 @@ class MainApp():
     def main_quiz(self): # Main quiz area
         for i in self.master.winfo_children():
             i.destroy()
+
+        main_quiz = tk.Frame(master=self.master, background="#d9d9d9", width=1280, height=720)
+        main_quiz.grid(row=128, column=70, sticky="NW")
+        main_quiz.place(x=0, y=0)
+
+        quiz_title = tk.Label(master=main_quiz, text=f"{self.sel_cat}, {self.sel_diff}")
+        
         
 
 # Run the actual app

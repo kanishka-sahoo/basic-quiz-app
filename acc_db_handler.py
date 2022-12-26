@@ -35,13 +35,17 @@ def is_user_present(usnm):
     else:
         return False
 
-def logout(usnm):
-    curr_time = time.time()
-    print(curr_time)
+
+def get_leaderboard(usnm):
+    leaderboard = []
     conn = sqlite3.connect('accounts.db')
     c = conn.cursor()
-    c.execute(f"UPDATE users SET last_played=? WHERE username=?", (curr_time, usnm))
-    res = c.fetchone()
+    c.execute("SELECT * FROM users ORDER BY score")
+    result = c.fetchall()
+    print(result)
+    leaderboard = result[:5:]
+    print(leaderboard)
     c.execute("SELECT * FROM users WHERE username=?", (usnm, ))
-    result = c.fetchone()
-    conn.close()
+    user = c.fetchone()
+    leaderboard.append(user)
+    return leaderboard
