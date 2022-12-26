@@ -1,11 +1,6 @@
-from tkinter import *
-from tkinter import ttk
-y = 0
-a = ttk.notebook()
-frame1 = ttk.Frame(a)
-frame2 = ttk.Frame(a)
-frame3 = ttk.Frame(a)
-frame4 = ttk.Frame(a)
-frame5 = ttk.Frame(a)
+import requests
 
-root = ttk.Frame(a) # 
+def get_data(parameters):
+    response = requests.get(url="https://opentdb.com/api.php", params=parameters)
+    question_data = response.json()["results"] # Gets the data as a json object
+    return question_data

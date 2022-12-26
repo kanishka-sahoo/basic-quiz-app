@@ -8,6 +8,7 @@ import tkinter as tk
 import sys
 import acc_db_handler as adh
 import datetime as dt
+import questions_handler as qh
 
 class MainApp():
     def __init__(self, master) -> None:
@@ -340,9 +341,23 @@ class MainApp():
         main_quiz.grid(row=128, column=70, sticky="NW")
         main_quiz.place(x=0, y=0)
 
-        quiz_title = tk.Label(master=main_quiz, text=f"{self.sel_cat}, {self.sel_diff}")
+        quiz_title = tk.Label(master=main_quiz, text=f"{self.sel_cat.get()}, {self.sel_diff.get()}", font=("ariel", 22, "bold"), bg="#d9d9d9")
+        quiz_title.place(relx=0.5, rely=0.05, anchor=tk.CENTER)
         
-        
+        score = tk.StringVar()
+        score.set("Score: 0")
+
+        score_text = tk.Label(master=main_quiz, textvariable=score, font=("ariel", 22, "bold"), bg="#d9d9d9")
+        score_text.place(relx=0.9, rely=0.05, anchor=tk.CENTER)
+
+        quit_btn = tk.Button(master=main_quiz, text="Quit", width=10, font=("ariel", 16, "bold"))
+        quit_btn.place(relx=0.1, rely=0.05, anchor=tk.CENTER)     
+
+        question_text = tk.StringVar()
+        question_text.set("Q: Lorem Ipsum")
+
+        question_ = tk.Label(master=main_quiz, textvariable=question_text, font=("ariel", 22, ), bg="#d9d9d9")
+        question_.place(relx=0.3, rely=0.3, anchor=tk.NW)
 
 # Run the actual app
 root = tk.Tk()
