@@ -16,6 +16,8 @@ class MainApp():
         self.master.geometry("1280x720")
         self.master.resizable(False, False)
         self.reg_or_login()
+        self.scr = 0
+        self.indx = 0
 
     def reg_or_login(self):
         for i in self.master.winfo_children():
@@ -298,11 +300,9 @@ class MainApp():
         prmp.place(relx=0.6, rely=0.75, anchor=tk.NW)
     
     def leaderboards(self, usr): # To be done
-        for i in self.master.winfo_children():
-            i.destroy()
 
         def do_back():
-            self.main_screen()
+            leader_board.destroy()
         
         leader_board = tk.Frame(master=self.master, background="#d9d9d9", width=1280, height=720)
         leader_board.grid(row=128, column=70, sticky="NW")
@@ -315,9 +315,9 @@ class MainApp():
         back_btn.place(relx=0.1, rely=0.1, anchor=tk.CENTER)
 
     def staging_area(self):   # Where rules are explained
-        for i in self.master.winfo_children():
-            i.destroy()
-        
+        def goback():
+            staging_area.destroy()
+                
         staging_area = tk.Frame(master=self.master, background="#d9d9d9", width=1280, height=720)
         staging_area.grid(row=128, column=70, sticky="NW")
         staging_area.place(x=0, y=0)
@@ -333,7 +333,7 @@ class MainApp():
         quno_cnf = tk.Label(master=staging_area, text=f"Number of Questions: {self.ques_no.get()}", font=("ariel", 22, ), bg="#d9d9d9")
         quno_cnf.place(relx=0.3, rely=0.5, anchor=tk.W)
 
-        back_btn = tk.Button(master=staging_area, text="Back", width=10, font=("ariel", 16, "bold"), command=self.main_screen)
+        back_btn = tk.Button(master=staging_area, text="Back", width=10, font=("ariel", 16, "bold"), command=goback)
         back_btn.place(relx=0.1, rely=0.1, anchor=tk.CENTER)
 
         confirm_button = tk.Button(master=staging_area, text="Confirm", width=10, font=("ariel", 16, "bold"), command=self.main_quiz)
@@ -343,10 +343,11 @@ class MainApp():
         for i in self.master.winfo_children():
             i.destroy()
 
-        self.indx = 0
         def next_question():    # updates the question and options during the quiz
             print(questions[self.indx][1], " : ", val.get())
-            if val.get() == questions[self.indx][1]:
+            if self.indx == len(questions)-1:
+                self.end_screen(len(questions))
+            elif val.get() == questions[self.indx][1]:
                 ans_fb.set("Correct!")
                 self.indx = self.indx + 1
                 question_text.set(questions[self.indx][0])
@@ -400,7 +401,6 @@ class MainApp():
         quiz_title.place(relx=0.5, rely=0.05, anchor=tk.CENTER)
         
         score = tk.StringVar()
-        self.scr = 0
         score.set("Score: "+str(self.scr))
 
         score_text = tk.Label(master=main_quiz, textvariable=score, font=("ariel", 22, "bold"), bg="#d9d9d9")
@@ -411,7 +411,7 @@ class MainApp():
         qno_text = tk.Label(master=main_quiz, textvariable=qno, font=("ariel", 22, "bold"), bg="#d9d9d9")
         qno_text.place(relx=0.1, rely=0.05, anchor=tk.W)
 
-        quit_btn = tk.Button(master=main_quiz, text="Quit", width=10, font=("ariel", 16, "bold"))
+        quit_btn = tk.Button(master=main_quiz, text="Quit", width=10, font=("ariel", 16, "bold"), command=self.quit_screen)
         quit_btn.place(relx=0.1, rely=0.9, anchor=tk.CENTER)     
 
         question_text = tk.StringVar()
@@ -453,10 +453,42 @@ class MainApp():
         ans_fb = tk.StringVar()
         ans_txt = tk.Label(master=main_quiz, textvariable=ans_fb, font=("ariel", 22, ), bg="#d9d9d9", justify=tk.LEFT)
         ans_txt.place(relx=0.5, rely=0.9, anchor=tk.CENTER)
+    
+    def quit_screen(self):
 
-    def end_screen(self): # End of quiz, shows score and nav buttons
+        def do_quit():
+            self.main_screen()
+        
+        def goback():
+            q_scr.destroy()
+        
+        q_scr = tk.Frame(master=self.master, background="#d9d9d9", width=1280, height=720)
+        q_scr.grid(row=128, column=70, sticky="NW")
+        q_scr.place(x=0, y=0)
+
+        q_title = tk.Label(master=q_scr, text="Are you sure you want to quit?", font=("ariel", 28, ), bg="#d9d9d9", justify=tk.LEFT)
+        q_title.place(relx=0.5, rely=0.1, anchor=tk.CENTER)
+
+        yes_button = tk.Button(master=q_scr, text="Yes", font=("ariel", 18, ), command=do_quit)
+        yes_button.place(relx=0.4, rely=0.5, anchor=tk.W)
+
+        no_button = tk.Button(master=q_scr, text="No", font=("ariel", 18, ), command=goback)
+        no_button.place(relx=0.6, rely=0.5, anchor=tk.E)
+        
+    def end_screen(self, tot_qns): # End of quiz, shows score and nav buttons
         for i in self.master.winfo_children():
             i.destroy()
+
+        end_scr = tk.Frame(master=self.master, background="#d9d9d9", width=1280, height=720)
+        end_scr.grid(row=128, column=70, sticky="NW")
+        end_scr.place(x=0, y=0)
+
+        end_title = tk.Label(master=end_scr, text="Quiz Completed", font=("ariel", 32, ), bg="#d9d9d9", justify=tk.LEFT)
+        end_title.place(relx=0.5, rely=0.1, anchor=tk.CENTER)
+
+        scr_lbl = tk.Label(master=end_scr, text=f"Score: {self.scr}/{tot_qns}", font=("ariel", 28, ), bg="#d9d9d9", justify=tk.LEFT)
+        scr_lbl.place(relx=0.5, rely=0.3, anchor=tk.CENTER)
+
 
 # Run the actual app
 root = tk.Tk()
