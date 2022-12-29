@@ -199,6 +199,7 @@ class MainApp():
 
     def main_screen(self):
         usr = self.usr
+        
         for i in self.master.winfo_children():
             i.destroy()
 
@@ -244,9 +245,15 @@ class MainApp():
 
         # Category selection menu (dropdown)
         CATEGORIES = [
-            "General Knowledge",
+            "Entertainment: Music",
+            "Entertainment: Television",
+            "Entertainment: Video Games",
+            "Science & Nature",
+            "Science: Computers",
+            "Science: Mathematics",
             "Sports",
-            "Computers"
+            "Science: Gadgets",
+            "Entertainment: Japanese Anime & Manga"
         ]
         self.sel_cat = tk.StringVar()
         self.sel_cat.set("Select Category")
@@ -307,7 +314,6 @@ class MainApp():
         back_btn = tk.Button(master=leader_board, text="BACK", width=10, font=("ariel", 16, "bold"), command=do_back)
         back_btn.place(relx=0.1, rely=0.1, anchor=tk.CENTER)
 
-
     def staging_area(self):   # Where rules are explained
         for i in self.master.winfo_children():
             i.destroy()
@@ -337,6 +343,55 @@ class MainApp():
         for i in self.master.winfo_children():
             i.destroy()
 
+        self.indx = 0
+        def next_question():    # updates the question and options during the quiz
+            print(questions[self.indx][1], " : ", val.get())
+            if val.get() == questions[self.indx][1]:
+                ans_fb.set("Correct!")
+                self.indx = self.indx + 1
+                question_text.set(questions[self.indx][0])
+                opt1_text.set(questions[self.indx][2][0])
+                opt2_text.set(questions[self.indx][2][1])
+                opt3_text.set(questions[self.indx][2][2])
+                opt4_text.set(questions[self.indx][2][3])
+                opt1.config(value = opt1_text.get(), textvariable=opt1_text, variable=val)
+                opt2.config(value = opt2_text.get(), textvariable=opt2_text, variable=val)
+                opt3.config(value = opt3_text.get(), textvariable=opt3_text, variable=val)
+                opt4.config(value = opt4_text.get(), textvariable=opt4_text, variable=val)
+                val.set(None)
+                self.scr += 1
+                qno.set("Q: "+str(self.indx+1))
+                score.set("Score: "+str(self.scr))
+            else:
+                ans_fb.set("Answer: "+questions[self.indx][1])
+                self.indx = self.indx + 1
+                question_text.set(questions[self.indx][0])
+                opt1_text.set(questions[self.indx][2][0])
+                opt2_text.set(questions[self.indx][2][1])
+                opt3_text.set(questions[self.indx][2][2])
+                opt4_text.set(questions[self.indx][2][3])
+                opt1.config(value = opt1_text.get(), textvariable=opt1_text, variable=val)
+                opt2.config(value = opt2_text.get(), textvariable=opt2_text, variable=val)
+                opt3.config(value = opt3_text.get(), textvariable=opt3_text, variable=val)
+                opt4.config(value = opt4_text.get(), textvariable=opt4_text, variable=val)
+                qno.set("Q: "+str(self.indx+1))
+
+
+        def check_answer():     # Checks the answer and provides feedback
+            if val.get() == questions[self.indx][1]:
+                ans_fb.set("Correct")
+            else:
+                ans_fb.set("Wrong")
+        
+        
+        parameters = {
+            "amount": int(self.ques_no.get()),
+            "type": "multiple",
+            "category": str(qh.get_category(self.sel_cat.get())),
+            "difficulty": self.sel_diff.get().lower()
+        }
+
+        questions = qh.get_data(parameters)
         main_quiz = tk.Frame(master=self.master, background="#d9d9d9", width=1280, height=720)
         main_quiz.grid(row=128, column=70, sticky="NW")
         main_quiz.place(x=0, y=0)
@@ -345,20 +400,63 @@ class MainApp():
         quiz_title.place(relx=0.5, rely=0.05, anchor=tk.CENTER)
         
         score = tk.StringVar()
-        score.set("Score: 0")
+        self.scr = 0
+        score.set("Score: "+str(self.scr))
 
         score_text = tk.Label(master=main_quiz, textvariable=score, font=("ariel", 22, "bold"), bg="#d9d9d9")
         score_text.place(relx=0.9, rely=0.05, anchor=tk.CENTER)
+        
+        qno = tk.StringVar()
+        qno.set("Q: "+str(self.indx+1))
+        qno_text = tk.Label(master=main_quiz, textvariable=qno, font=("ariel", 22, "bold"), bg="#d9d9d9")
+        qno_text.place(relx=0.1, rely=0.05, anchor=tk.W)
 
         quit_btn = tk.Button(master=main_quiz, text="Quit", width=10, font=("ariel", 16, "bold"))
-        quit_btn.place(relx=0.1, rely=0.05, anchor=tk.CENTER)     
+        quit_btn.place(relx=0.1, rely=0.9, anchor=tk.CENTER)     
 
         question_text = tk.StringVar()
-        question_text.set("Lorem Ipsum\ntest test")
+        question_text.set(questions[self.indx][0])
 
-        question_ = tk.Label(master=main_quiz, textvariable=question_text, font=("ariel", 22, ), bg="#d9d9d9", justify=tk.LEFT)
+        question_ = tk.Label(master=main_quiz, textvariable=question_text, font=("ariel", 22, ), bg="#d9d9d9", justify=tk.LEFT, wraplength=1000)
         question_.place(relx=0.15, rely=0.2, anchor=tk.NW)
 
+        # Add options block 
+
+        val = tk.StringVar()
+        val.set(None)
+        opt1_text = tk.StringVar()
+        opt1_text.set(questions[self.indx][2][0])
+        opt1 = tk.Radiobutton(master=main_quiz, textvariable=opt1_text, value=opt1_text.get(), variable = val,font=("ariel", 22, ), bg="#d9d9d9", justify=tk.LEFT)
+        opt1.place(relx=0.15, rely=0.4) 
+        opt2_text = tk.StringVar()
+        opt2_text.set(questions[self.indx][2][1])
+        opt2 = tk.Radiobutton(master=main_quiz, textvariable=opt2_text, value=opt2_text.get(), variable = val,font=("ariel", 22, ), bg="#d9d9d9", justify=tk.LEFT)
+        opt2.place(relx=0.15, rely=0.5)            
+        opt3_text = tk.StringVar()
+        opt3_text.set(questions[self.indx][2][2])
+        opt3 = tk.Radiobutton(master=main_quiz, textvariable=opt3_text, value=opt3_text.get(), variable = val,font=("ariel", 22, ), bg="#d9d9d9", justify=tk.LEFT)
+        opt3.place(relx=0.15, rely=0.6)        
+        opt4_text = tk.StringVar()
+        opt4_text.set(questions[self.indx][2][3])
+        opt4 = tk.Radiobutton(master=main_quiz, textvariable=opt4_text, value=opt4_text.get(), variable = val,font=("ariel", 22, ), bg="#d9d9d9", justify=tk.LEFT)
+        opt4.place(relx=0.15, rely=0.7)   
+
+        # Next button
+        next_btn = tk.Button(master=main_quiz, text="Next", font=("ariel", 18, ), command=next_question)
+        next_btn.place(relx=0.9, rely=0.9, anchor=tk.CENTER)
+
+        # Check Answer Button
+        check_btn = tk.Button(master=main_quiz, text="Check", font=("ariel", 18, ), command=check_answer)
+        check_btn.place(relx=0.05, rely=0.5, anchor=tk.CENTER)
+
+        # Answer feedback
+        ans_fb = tk.StringVar()
+        ans_txt = tk.Label(master=main_quiz, textvariable=ans_fb, font=("ariel", 22, ), bg="#d9d9d9", justify=tk.LEFT)
+        ans_txt.place(relx=0.5, rely=0.9, anchor=tk.CENTER)
+
+    def end_screen(self): # End of quiz, shows score and nav buttons
+        for i in self.master.winfo_children():
+            i.destroy()
 
 # Run the actual app
 root = tk.Tk()
