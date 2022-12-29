@@ -40,12 +40,28 @@ def get_leaderboard(usnm):
     leaderboard = []
     conn = sqlite3.connect('accounts.db')
     c = conn.cursor()
-    c.execute("SELECT * FROM users ORDER BY score")
+    c.execute("SELECT * FROM users ORDER BY score DESC")
     result = c.fetchall()
     print(result)
-    leaderboard = result[:5:]
+    length = len(result)
+    leaderboard = result[:min(5, length):]
     print(leaderboard)
     c.execute("SELECT * FROM users WHERE username=?", (usnm, ))
     user = c.fetchone()
-    leaderboard.append(user)
+    conn.close()
+    if leaderboard[-1] == user:
+        pass
+    else:
+        leaderboard.append(user)
     return leaderboard
+
+def update_score(usnm, score, tot_qns):
+    conn = sqlite3.connect('accounts.db')
+    c = conn.cursor()
+    c.execute("SELECT * FROM users WHERE username=?", (usnm, ))
+    row = c.fetchone()
+    c.execute("UPDATE users SET score=?, total_questions=? WHERE username=?", (score+int(row[2]), tot_qns+int(row[3]), usnm))
+    result = c.fetchall()
+    print(result)
+    conn.commit()
+    conn.close()

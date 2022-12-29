@@ -12,7 +12,7 @@ c.execute('''
             username TEXT PRIMARY KEY, 
             password TEXT NOT NULL,
             score INTEGER DEFAULT 0,
-            extras INTEGER DEFAULT 0,
+            total_questions INTEGER DEFAULT 0,
             acc_created INTEGER DEFAULT 0);
           ''')
 

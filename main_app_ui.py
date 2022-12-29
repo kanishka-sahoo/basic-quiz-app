@@ -1,6 +1,6 @@
 '''
 Tkinter App
-Author: Kanishka Sahoo
+Author: Kanishka Sahoo (Code Ninjas)
 Date: 2022/11/30
 '''
 
@@ -9,7 +9,8 @@ import sys
 import acc_db_handler as adh
 import datetime as dt
 import questions_handler as qh
-class MainApp():
+
+class PythonQuiz():
     def __init__(self, master) -> None:
         self.master = master
         self.master.title("Python Quiz")
@@ -83,6 +84,10 @@ class MainApp():
         log_txt = tk.Label(master=reg_page, text="Sign Up", font=("ariel", 32, "bold"), bg="#d9d9d9")
         log_txt.place(relx=0.5, rely=0.25, anchor=tk.CENTER)
 
+        # Password hints
+        pswd_hint_text = """Please use a username with 6 or more characters, having only alphabets and numbers\nPassword must contain minimum 6 characters with one special character"""
+        pswd_hint = tk.Label(master=reg_page, text=pswd_hint_text, font=("ariel", 14, "bold"), bg="#d9d9d9", justify=tk.LEFT, wraplength=500)
+        pswd_hint.place(relx=0.28, rely=0.8)
         # username field
         usrnm_lbl = tk.Label(master=reg_page, text="Username:", font=("ariel", 24, "bold"), bg="#d9d9d9")
         usrnm_lbl.place(relx=0.27, rely=0.35, anchor=tk.E)
@@ -114,7 +119,7 @@ class MainApp():
 
         # Validate User:
         val_usr = tk.Label(master=reg_page, textvariable=message, font=("ariel", 24, "bold"), bg="#d9d9d9")
-        val_usr.place(relx=0.5, rely=0.85, anchor=tk.CENTER)
+        val_usr.place(relx=0.5, rely=0.75, anchor=tk.CENTER)
 
     def login(self):
         # Destroys all the elements of root (master) before creating new ones
@@ -191,7 +196,7 @@ class MainApp():
         cred_title = tk.Label(master=credits_body, text="Credits", font=("ariel", 32, "bold"), bg="#d9d9d9")
         cred_title.place(relx=0.5, rely=0.1, anchor=tk.CENTER)
         # Text
-        credits_text = """Kanishka Sahoo: Pretty Much Everything\nBhuvan Anand: ---\nMadhav Nair: ---"""
+        credits_text = """Kanishka Sahoo: Pretty Much Everything\nBhuvan Anand: ?\nMadhav Nair: ?"""
         cred_text = tk.Label(master=credits_body, text=credits_text,font=("ariel", 24, ), bg="#d9d9d9", height=5, width=52)
         cred_text.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
 
@@ -206,7 +211,8 @@ class MainApp():
             i.destroy()
 
         def do_leaderboard():
-            self.leaderboards(usr[0])
+            self.leaderboards()
+        
         def go_to_start():  # Checks for the neccessary condition to start i.e. all the options are validated.
             if self.ques_no.get().isnumeric():
                 if int(self.ques_no.get()) <= 50 or int(self.ques_no.get()) >= 1:
@@ -299,11 +305,13 @@ class MainApp():
         prmp = tk.Label(master=main_screen_body, textvariable=prmp_txt, bg="#d9d9d9", font=("ariel", 16, "bold"))
         prmp.place(relx=0.6, rely=0.75, anchor=tk.NW)
     
-    def leaderboards(self, usr): # To be done
-
+    def leaderboards(self): # To be done
+        usnm = self.usr[0]
         def do_back():
             leader_board.destroy()
         
+        lbrd = adh.get_leaderboard(usnm)
+
         leader_board = tk.Frame(master=self.master, background="#d9d9d9", width=1280, height=720)
         leader_board.grid(row=128, column=70, sticky="NW")
         leader_board.place(x=0, y=0)
@@ -313,6 +321,9 @@ class MainApp():
 
         back_btn = tk.Button(master=leader_board, text="BACK", width=10, font=("ariel", 16, "bold"), command=do_back)
         back_btn.place(relx=0.1, rely=0.1, anchor=tk.CENTER)
+
+        # Leaderboard Text
+        
 
     def staging_area(self):   # Where rules are explained
         def goback():
@@ -342,13 +353,15 @@ class MainApp():
     def main_quiz(self): # Main quiz area
         for i in self.master.winfo_children():
             i.destroy()
-
+        self.indx = 0
         def next_question():    # updates the question and options during the quiz
             print(questions[self.indx][1], " : ", val.get())
-            if self.indx == len(questions)-1:
-                self.end_screen(len(questions))
-            elif val.get() == questions[self.indx][1]:
+            if val.get() == questions[self.indx][1]:
                 ans_fb.set("Correct!")
+                self.scr += 1
+                if self.indx == len(questions)-1:
+                    self.end_screen(len(questions))
+                    return None
                 self.indx = self.indx + 1
                 question_text.set(questions[self.indx][0])
                 opt1_text.set(questions[self.indx][2][0])
@@ -360,11 +373,12 @@ class MainApp():
                 opt3.config(value = opt3_text.get(), textvariable=opt3_text, variable=val)
                 opt4.config(value = opt4_text.get(), textvariable=opt4_text, variable=val)
                 val.set(None)
-                self.scr += 1
                 qno.set("Q: "+str(self.indx+1))
                 score.set("Score: "+str(self.scr))
             else:
                 ans_fb.set("Answer: "+questions[self.indx][1])
+                if self.indx == len(questions)-1:
+                    self.end_screen(len(questions))
                 self.indx = self.indx + 1
                 question_text.set(questions[self.indx][0])
                 opt1_text.set(questions[self.indx][2][0])
@@ -489,8 +503,15 @@ class MainApp():
         scr_lbl = tk.Label(master=end_scr, text=f"Score: {self.scr}/{tot_qns}", font=("ariel", 28, ), bg="#d9d9d9", justify=tk.LEFT)
         scr_lbl.place(relx=0.5, rely=0.3, anchor=tk.CENTER)
 
+        lebd_btn = tk.Button(master=end_scr, text="Leaderboards", width=20, font=("ariel", 16, "bold"), command=self.leaderboards)
+        lebd_btn.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
+        
+        mainmenu_btn = tk.Button(master=end_scr, text="Main Menu", width=20, font=("ariel", 16, "bold"), command=self.main_screen)
+        mainmenu_btn.place(relx=0.5, rely=0.6, anchor=tk.CENTER)
+
+        adh.update_score(score=self.scr, tot_qns=self.indx+1, usnm=self.usr[0])
 
 # Run the actual app
 root = tk.Tk()
-MainApp(root)
+PythonQuiz(root)
 root.mainloop()
