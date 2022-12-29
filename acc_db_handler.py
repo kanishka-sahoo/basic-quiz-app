@@ -48,12 +48,9 @@ def get_leaderboard(usnm):
     print(leaderboard)
     c.execute("SELECT * FROM users WHERE username=?", (usnm, ))
     user = c.fetchone()
+    leaderboard = list(dict.fromkeys(leaderboard))
     conn.close()
-    if leaderboard[-1] == user:
-        pass
-    else:
-        leaderboard.append(user)
-    return leaderboard
+    return leaderboard, user
 
 def update_score(usnm, score, tot_qns):
     conn = sqlite3.connect('accounts.db')
@@ -65,3 +62,11 @@ def update_score(usnm, score, tot_qns):
     print(result)
     conn.commit()
     conn.close()
+
+def get_user_details(usnm):
+    conn = sqlite3.connect('accounts.db')
+    c = conn.cursor()
+    c.execute("SELECT * FROM users WHERE username=?", (usnm, ))
+    row = c.fetchone()
+    conn.close()
+    return row

@@ -205,7 +205,7 @@ class PythonQuiz():
         back_btn.place(relx=0.1, rely=0.1, anchor=tk.CENTER) 
 
     def main_screen(self):
-        usr = self.usr
+        usr = adh.get_user_details(self.usr[0])
         
         for i in self.master.winfo_children():
             i.destroy()
@@ -252,17 +252,9 @@ class PythonQuiz():
         catg_discl.place(relx=0.1, rely=0.35, anchor=tk.NW)
 
         # Category selection menu (dropdown)
-        CATEGORIES = [
-            "Entertainment: Music",
-            "Entertainment: Television",
-            "Entertainment: Video Games",
-            "Science & Nature",
-            "Science: Computers",
-            "Science: Mathematics",
-            "Sports",
-            "Science: Gadgets",
-            "Entertainment: Japanese Anime & Manga"
-        ]
+        CATEGORIES = list(qh.CATEGORIES.keys())
+
+
         self.sel_cat = tk.StringVar()
         self.sel_cat.set("Select Category")
 
@@ -310,7 +302,7 @@ class PythonQuiz():
         def do_back():
             leader_board.destroy()
         
-        lbrd = adh.get_leaderboard(usnm)
+        lbrd, user = adh.get_leaderboard(usnm)
 
         leader_board = tk.Frame(master=self.master, background="#d9d9d9", width=1280, height=720)
         leader_board.grid(row=128, column=70, sticky="NW")
@@ -323,7 +315,49 @@ class PythonQuiz():
         back_btn.place(relx=0.1, rely=0.1, anchor=tk.CENTER)
 
         # Leaderboard Text
-        
+        try:
+            ldr1_text = tk.StringVar()
+            ldr1_text.set(f"1. {lbrd[0][0]}: {lbrd[0][2]}/{lbrd[0][3]}")
+        except IndexError:
+            pass
+        try:
+            ldr2_text = tk.StringVar()
+            ldr2_text.set(f"2. {lbrd[1][0]}: {lbrd[1][2]}/{lbrd[1][3]}")
+        except IndexError:
+            pass
+        try:
+            ldr3_text = tk.StringVar()
+            ldr3_text.set(f"3. {lbrd[2][0]}: {lbrd[2][2]}/{lbrd[2][3]}")
+        except IndexError:
+            pass
+        try:
+            ldr4_text = tk.StringVar()
+            ldr4_text.set(f"4. {lbrd[3][0]}: {lbrd[3][2]}/{lbrd[3][3]}")
+        except IndexError:
+            pass
+        try:
+            ldr5_text = tk.StringVar()
+            ldr5_text.set(f"5. {lbrd[4][0]}: {lbrd[4][2]}/{lbrd[4][3]}")
+        except IndexError:
+            pass
+        try:
+            ldr6_text = tk.StringVar()
+            ldr6_text.set(f"You. {user[0]}: {user[2]}/{user[3]}")
+        except IndexError:
+            pass
+            
+        ldr1 = tk.Label(master=leader_board, text=ldr1_text.get(), bg="#d9d9d9", font=("ariel", 26, "bold"), justify=tk.LEFT)
+        ldr1.place(relx=0.2, rely=0.2)
+        ldr2 = tk.Label(master=leader_board, text=ldr2_text.get(), bg="#d9d9d9", font=("ariel", 26, "bold"), justify=tk.LEFT)
+        ldr2.place(relx=0.2, rely=0.3)
+        ldr3 = tk.Label(master=leader_board, text=ldr3_text.get(), bg="#d9d9d9", font=("ariel", 26, "bold"), justify=tk.LEFT)
+        ldr3.place(relx=0.2, rely=0.4)
+        ldr4 = tk.Label(master=leader_board, text=ldr4_text.get(), bg="#d9d9d9", font=("ariel", 26, "bold"), justify=tk.LEFT)
+        ldr4.place(relx=0.2, rely=0.5)
+        ldr5 = tk.Label(master=leader_board, text=ldr5_text.get(), bg="#d9d9d9", font=("ariel", 26, "bold"), justify=tk.LEFT)
+        ldr5.place(relx=0.2, rely=0.6)
+        ldr6 = tk.Label(master=leader_board, text=ldr6_text.get(), bg="#d9d9d9", font=("ariel", 26, "bold"), justify=tk.LEFT)
+        ldr6.place(relx=0.2, rely=0.7)
 
     def staging_area(self):   # Where rules are explained
         def goback():
