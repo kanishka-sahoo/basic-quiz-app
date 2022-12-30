@@ -6,7 +6,8 @@ c = conn.cursor()
 c.execute('''
             DROP TABLE IF EXISTS users;
             ''')
-# TODO: Change the `last_played` field to something else.
+
+
 c.execute('''
           CREATE TABLE IF NOT EXISTS users(
             username TEXT PRIMARY KEY, 

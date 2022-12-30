@@ -4,26 +4,27 @@ Author: Kanishka Sahoo (Code Ninjas)
 Date: 2022/11/30
 '''
 
-import tkinter as tk    
-import sys
-import acc_db_handler as adh
-import datetime as dt
-import questions_handler as qh
+import tkinter as tk
+import acc_db_handler as adh    # Account Database Handler, communicates with the database of users
+import questions_handler as qh  # Obtains quiz questions from internet and parses them into a usable form
 
-class PythonQuiz():
+class PythonQuiz(): # Class is created to efficiently create and destroy new screens for the app
     def __init__(self, master) -> None:
         self.master = master
-        self.master.title("Python Quiz")
-        self.master.geometry("1280x720")
-        self.master.resizable(False, False)
-        self.reg_or_login()
+        self.master.title("Python Quiz")    # Add the title of the app
+        self.master.geometry("1280x720")    # Specify the resolution as beimg 1280 by 720 pixels    
+        self.master.resizable(False, False) # Disables the resize of the window to avoid some parts being cut off
         self.scr = 0
         self.indx = 0
+        self.reg_or_login() # Initialises the program on the opening page
 
-    def reg_or_login(self):
+
+    def reg_or_login(self): # The page which asks to register or login
+        # The below lines remove anythong previoulsy on screen by deletion from memory
         for i in self.master.winfo_children():
             i.destroy()
         
+        # Create a fframe on which the UI is placed to allow for custom background
         reg_login = tk.Frame(master=self.master, background="#d9d9d9", width=1280, height=720)
         reg_login.grid(row=128, column=70, sticky="NW")
         reg_login.place(x=0, y=0)
@@ -32,25 +33,29 @@ class PythonQuiz():
         loggedout = tk.Label(master=reg_login, text="Welcome to Quiz", font=("ariel", 32, "bold"), bg="#d9d9d9")
         loggedout.place(relx=0.5, rely=0.1, anchor=tk.CENTER)
 
+        # Adds the "you are not logged in" message
         loggedout2 = tk.Label(master=reg_login, text="You are not logged in.", font=("ariel", 24, "bold"), bg="#d9d9d9")
         loggedout2.place(relx=0.5, rely=0.2, anchor=tk.CENTER)
 
+        # Login Button
         login_btn = tk.Button(master=reg_login, text="Login", width=20, font=("ariel", 16, "bold"), command=self.login)
         login_btn.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
 
+        # Register button
         reg_btn = tk.Button(master=reg_login, text="Register", width=20, font=("ariel", 16, "bold"), command=self.register)
         reg_btn.place(relx=0.5, rely=0.6, anchor=tk.CENTER)
 
+        # Credits button
         cred_btn = tk.Button(master=reg_login, text="Credits", width=20, font=("ariel", 16, "bold"), command=self.credits)
         cred_btn.place(relx=0.5, rely=0.7, anchor=tk.CENTER)
     
-    def register(self):
+    def register(self): # Allows the user to register to the app
         for i in self.master.winfo_children():
             i.destroy()
 
-        message = tk.StringVar()
+        message = tk.StringVar()    # Used to provide a feedback to the user about the username or password
         
-        def createUser():
+        def createUser():   # This function checks and validates user data and calls the adh function if all is correct
             usnm = username.get()
             pswd = password.get()
             pswd2 = password_cnf.get()
@@ -88,6 +93,7 @@ class PythonQuiz():
         pswd_hint_text = """Please use a username with 6 or more characters, having only alphabets and numbers\nPassword must contain minimum 6 characters with one special character"""
         pswd_hint = tk.Label(master=reg_page, text=pswd_hint_text, font=("ariel", 14, "bold"), bg="#d9d9d9", justify=tk.LEFT, wraplength=500)
         pswd_hint.place(relx=0.28, rely=0.8)
+
         # username field
         usrnm_lbl = tk.Label(master=reg_page, text="Username:", font=("ariel", 24, "bold"), bg="#d9d9d9")
         usrnm_lbl.place(relx=0.27, rely=0.35, anchor=tk.E)
@@ -121,14 +127,14 @@ class PythonQuiz():
         val_usr = tk.Label(master=reg_page, textvariable=message, font=("ariel", 24, "bold"), bg="#d9d9d9")
         val_usr.place(relx=0.5, rely=0.75, anchor=tk.CENTER)
 
-    def login(self):
+    def login(self):    # Logs the usr into the app
         # Destroys all the elements of root (master) before creating new ones
         for i in self.master.winfo_children():
             i.destroy()
 
         message = tk.StringVar()
 
-        def validateLogin():
+        def validateLogin():    # Verifies the user entered both usrname ans password
             usnm = username.get()
             pswd = password.get()
             isCorrect, usr = adh.login_user(usnm=usnm, pswd=pswd)
@@ -140,7 +146,7 @@ class PythonQuiz():
             else:
                 message.set("Username and/or password is wrong")
 
-        def toggle_pswd():
+        def toggle_pswd():  # Controls the eye button to see entered password
             if pswd.cget('show') == '•':
                 pswd.config(show='')
             else:
@@ -185,9 +191,10 @@ class PythonQuiz():
         val_usr = tk.Label(master=login_body, textvariable=message, font=("ariel", 24, "bold"), bg="#d9d9d9")
         val_usr.place(relx=0.5, rely=0.85, anchor=tk.CENTER)
 
-    def credits(self):
+    def credits(self):  # Shows the credits page of the app
         for i in self.master.winfo_children():
             i.destroy()
+        
         credits_body = tk.Frame(master=self.master, background="#d9d9d9", width=1280, height=720)
         credits_body.grid(row=128, column=70, sticky="NW")
         credits_body.place(x=0, y=0)
@@ -204,13 +211,14 @@ class PythonQuiz():
         back_btn = tk.Button(master=credits_body, text="Back", width=10, font=("ariel", 16, "bold"), command=self.reg_or_login)
         back_btn.place(relx=0.1, rely=0.1, anchor=tk.CENTER) 
 
-    def main_screen(self):
-        usr = adh.get_user_details(self.usr[0])
+    def main_screen(self):  # The homepage of the app, shows leaderboard option, along with current score and the category and difficulty selections
+        self.usr = adh.get_user_details(self.usr[0])
+        usr = self.usr
         
         for i in self.master.winfo_children():
             i.destroy()
 
-        def do_leaderboard():
+        def do_leaderboard():   # opens the leaderboard screen
             self.leaderboards()
         
         def go_to_start():  # Checks for the neccessary condition to start i.e. all the options are validated.
@@ -225,7 +233,7 @@ class PythonQuiz():
             else:
                 prmp_txt.set("Did not enter a number")
         
-        def do_logout():
+        def do_logout():    # Logs out the user
             self.reg_or_login()
         
         main_screen_body = tk.Frame(master=self.master, background="#d9d9d9", width=1280, height=720)
@@ -239,6 +247,7 @@ class PythonQuiz():
         # Displays current Score
         score_text = tk.Label(master=main_screen_body, text=f"Score: {usr[2]}", font=("ariel", 32, "bold"), bg="#d9d9d9")
         score_text.place(relx=0.5, rely=0.2, anchor=tk.CENTER)
+
         # Takes user to logout page
         logout_btn = tk.Button(master=main_screen_body, text="Logout", width=10, font=("ariel", 16, "bold"), command=do_logout)
         logout_btn.place(relx=0.9, rely=0.1, anchor=tk.CENTER)
@@ -248,41 +257,51 @@ class PythonQuiz():
         opts_head.place(relx=0.1, rely=0.3, anchor=tk.W)
 
         # Add disclaimer regarding number of categories can only be 1
-        catg_discl = tk.Label(master=main_screen_body, text="Note: There can only be one category \nselected at one time.", font=("ariel", 16, "normal"), bg="#d9d9d9")
+        catg_discl = tk.Label(master=main_screen_body, text="Note: There can only be one category \nselected at one time.", font=("ariel", 16, "normal"), bg="#d9d9d9", justify=tk.LEFT)
         catg_discl.place(relx=0.1, rely=0.35, anchor=tk.NW)
 
         # Category selection menu (dropdown)
         CATEGORIES = list(qh.CATEGORIES.keys())
 
-
+        # The category selection variable
         self.sel_cat = tk.StringVar()
         self.sel_cat.set("Select Category")
 
+        # Categories options menu
         cat_dd = tk.OptionMenu(main_screen_body, self.sel_cat, *CATEGORIES)
         cat_dd.place(relx=0.1, rely=0.45, anchor=tk.NW)
 
         # Header of Difficulty selection area
         diff_head = tk.Label(master=main_screen_body, text="Select Difficulty", font=("ariel", 24, "normal"), bg="#d9d9d9")
         diff_head.place(relx=0.6, rely=0.3, anchor=tk.W)
-        
+
+        # Information about categories
+        opts_note = tk.Label(master=main_screen_body, text="There are 3 categories:\nEasy, Medium, Hard", font=("ariel", 16, "normal"), bg="#d9d9d9", justify=tk.LEFT)
+        opts_note.place(relx=0.6, rely=0.35, anchor=tk.NW)
+
+        # Available difficulties
         DIFFICULTIES = [
             "Hard",
             "Medium",
             "Easy"
         ]
+
+        # The selected difficulty variable
         self.sel_diff = tk.StringVar()
         self.sel_diff.set("Select Difficulty")
 
+        # Shows the options for difficulties
         sel_dd = tk.OptionMenu(main_screen_body, self.sel_diff, *DIFFICULTIES)
         sel_dd.place(relx=0.6, rely=0.45, anchor=tk.NW)
 
-        # Add number of questions slider
+        # Add number of questions entry box
         ques_txt = tk.Label(master=main_screen_body, text="Select Questions (1 to 50)", font=("ariel", 24, "normal"), bg="#d9d9d9")
-        ques_txt.place(relx=0.6, rely=0.55, anchor=tk.NW)
+        ques_txt.place(relx=0.5, rely=0.55, anchor=tk.CENTER)
 
+        # Variable for number of questions
         self.ques_no = tk.StringVar()
         ques_no_box = tk.Entry(master=main_screen_body, width=10, font=("ariel", 24), textvariable=self.ques_no)
-        ques_no_box.place(relx=0.6, rely=0.65, anchor=tk.NW)
+        ques_no_box.place(relx=0.5, rely=0.65, anchor=tk.CENTER)
 
         # Leaderboards button
         lebd_btn = tk.Button(master=main_screen_body, text="Leaderboards", width=12, font=("ariel", 16, "bold"), command=do_leaderboard)
@@ -297,7 +316,7 @@ class PythonQuiz():
         prmp = tk.Label(master=main_screen_body, textvariable=prmp_txt, bg="#d9d9d9", font=("ariel", 16, "bold"))
         prmp.place(relx=0.6, rely=0.75, anchor=tk.NW)
     
-    def leaderboards(self): # To be done
+    def leaderboards(self): # Shows the user score along with their rank
         usnm = self.usr[0]
         def do_back():
             leader_board.destroy()
@@ -308,13 +327,14 @@ class PythonQuiz():
         leader_board.grid(row=128, column=70, sticky="NW")
         leader_board.place(x=0, y=0)
 
-        title_label = tk.Label(master=leader_board, text="Leaderboard", bg="#d9d9d9", font=("ariel", 32, "bold"))
+        title_label = tk.Label(master=leader_board, text="Leaderboards", bg="#d9d9d9", font=("ariel", 32, "bold"))
         title_label.place(relx=0.5, rely=0.1, anchor=tk.CENTER)
 
-        back_btn = tk.Button(master=leader_board, text="BACK", width=10, font=("ariel", 16, "bold"), command=do_back)
+        back_btn = tk.Button(master=leader_board, text="Back", width=10, font=("ariel", 16, "bold"), command=do_back)
         back_btn.place(relx=0.1, rely=0.1, anchor=tk.CENTER)
 
         # Leaderboard Text
+        # Done as a try-except chain to evaluate every variable 
         try:
             ldr1_text = tk.StringVar()
             ldr1_text.set(f"1. {lbrd[0][0]}: {lbrd[0][2]}/{lbrd[0][3]}")
@@ -345,7 +365,8 @@ class PythonQuiz():
             ldr6_text.set(f"You. {user[0]}: {user[2]}/{user[3]}")
         except IndexError:
             pass
-            
+        
+        # Adds the rows describing the different users
         ldr1 = tk.Label(master=leader_board, text=ldr1_text.get(), bg="#d9d9d9", font=("ariel", 26, "bold"), justify=tk.LEFT)
         ldr1.place(relx=0.2, rely=0.2)
         ldr2 = tk.Label(master=leader_board, text=ldr2_text.get(), bg="#d9d9d9", font=("ariel", 26, "bold"), justify=tk.LEFT)
@@ -378,6 +399,7 @@ class PythonQuiz():
         quno_cnf = tk.Label(master=staging_area, text=f"Number of Questions: {self.ques_no.get()}", font=("ariel", 22, ), bg="#d9d9d9")
         quno_cnf.place(relx=0.3, rely=0.5, anchor=tk.W)
 
+        # Button to go back
         back_btn = tk.Button(master=staging_area, text="Back", width=10, font=("ariel", 16, "bold"), command=goback)
         back_btn.place(relx=0.1, rely=0.1, anchor=tk.CENTER)
 
@@ -387,7 +409,9 @@ class PythonQuiz():
     def main_quiz(self): # Main quiz area
         for i in self.master.winfo_children():
             i.destroy()
-        self.indx = 0
+        
+        self.indx = 0   # Sets question number index to zero to show first question
+
         def next_question():    # updates the question and options during the quiz
             print(questions[self.indx][1], " : ", val.get())
             if val.get() == questions[self.indx][1]:
@@ -432,13 +456,15 @@ class PythonQuiz():
             else:
                 ans_fb.set("Wrong")
         
-        
+        # defines the parameters for the quiz api
         parameters = {
             "amount": int(self.ques_no.get()),
             "type": "multiple",
             "category": str(qh.get_category(self.sel_cat.get())),
             "difficulty": self.sel_diff.get().lower()
         }
+
+        # Gets the question data from the api in a formatted manner
 
         questions = qh.get_data(parameters)
         main_quiz = tk.Frame(master=self.master, background="#d9d9d9", width=1280, height=720)
@@ -468,7 +494,7 @@ class PythonQuiz():
         question_ = tk.Label(master=main_quiz, textvariable=question_text, font=("ariel", 22, ), bg="#d9d9d9", justify=tk.LEFT, wraplength=1000)
         question_.place(relx=0.15, rely=0.2, anchor=tk.NW)
 
-        # Add options block 
+        # Add options  
 
         val = tk.StringVar()
         val.set(None)

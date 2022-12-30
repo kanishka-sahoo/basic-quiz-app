@@ -15,6 +15,10 @@ CATEGORIES = {
     "Science: Computers" : 18,
     "Science: Mathematics" : 19,
     "Sports": 21,
+    "History": 23,
+    "Politics": 24,
+    "Celebrities": 26,
+    "Vehicles" :28,
     "Science: Gadgets": 30,
     "Entertainment: Japanese Anime & Manga": 31
 }
@@ -35,4 +39,5 @@ def process_questions(question_data):
         rd.shuffle(choices)
         new_question = [question_text, correct_answer, choices]
         question_bank.append(new_question)
+    rd.shuffle(question_bank)
     return question_bank
