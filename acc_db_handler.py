@@ -40,7 +40,7 @@ def get_leaderboard(usnm):
     leaderboard = []
     conn = sqlite3.connect('accounts.db')
     c = conn.cursor()
-    c.execute("SELECT * FROM users ORDER BY score DESC")
+    c.execute("SELECT * FROM users ORDER BY total_questions DESC, score DESC")
     result = c.fetchall()
     print(result)
     length = len(result)
@@ -50,7 +50,7 @@ def get_leaderboard(usnm):
     user = c.fetchone()
     leaderboard = list(dict.fromkeys(leaderboard))
     conn.close()
-    return leaderboard, user
+    return leaderboard, user, leaderboard.index(user)
 
 def update_score(usnm, score, tot_qns):
     conn = sqlite3.connect('accounts.db')

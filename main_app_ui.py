@@ -321,7 +321,7 @@ class PythonQuiz(): # Class is created to efficiently create and destroy new scr
         def do_back():
             leader_board.destroy()
         
-        lbrd, user = adh.get_leaderboard(usnm)
+        lbrd, user, pos = adh.get_leaderboard(usnm)
 
         leader_board = tk.Frame(master=self.master, background="#d9d9d9", width=1280, height=720)
         leader_board.grid(row=128, column=70, sticky="NW")
@@ -362,20 +362,20 @@ class PythonQuiz(): # Class is created to efficiently create and destroy new scr
             pass
         try:
             ldr6_text = tk.StringVar()
-            ldr6_text.set(f"You. {user[0]}: {user[2]}/{user[3]}")
+            ldr6_text.set(f"{pos+1}. {user[0]}: {user[2]}/{user[3]} (You)")
         except IndexError:
             pass
         
         # Adds the rows describing the different users
-        ldr1 = tk.Label(master=leader_board, text=ldr1_text.get(), bg="#d9d9d9", font=("ariel", 26, "bold"), justify=tk.LEFT)
+        ldr1 = tk.Label(master=leader_board, text=ldr1_text.get(), bg="#d9d9d9", font=("ariel", 28, ), justify=tk.LEFT)
         ldr1.place(relx=0.2, rely=0.2)
-        ldr2 = tk.Label(master=leader_board, text=ldr2_text.get(), bg="#d9d9d9", font=("ariel", 26, "bold"), justify=tk.LEFT)
+        ldr2 = tk.Label(master=leader_board, text=ldr2_text.get(), bg="#d9d9d9", font=("ariel", 28, ), justify=tk.LEFT)
         ldr2.place(relx=0.2, rely=0.3)
-        ldr3 = tk.Label(master=leader_board, text=ldr3_text.get(), bg="#d9d9d9", font=("ariel", 26, "bold"), justify=tk.LEFT)
+        ldr3 = tk.Label(master=leader_board, text=ldr3_text.get(), bg="#d9d9d9", font=("ariel", 28, ), justify=tk.LEFT)
         ldr3.place(relx=0.2, rely=0.4)
-        ldr4 = tk.Label(master=leader_board, text=ldr4_text.get(), bg="#d9d9d9", font=("ariel", 26, "bold"), justify=tk.LEFT)
+        ldr4 = tk.Label(master=leader_board, text=ldr4_text.get(), bg="#d9d9d9", font=("ariel", 28, ), justify=tk.LEFT)
         ldr4.place(relx=0.2, rely=0.5)
-        ldr5 = tk.Label(master=leader_board, text=ldr5_text.get(), bg="#d9d9d9", font=("ariel", 26, "bold"), justify=tk.LEFT)
+        ldr5 = tk.Label(master=leader_board, text=ldr5_text.get(), bg="#d9d9d9", font=("ariel", 28, ), justify=tk.LEFT)
         ldr5.place(relx=0.2, rely=0.6)
         ldr6 = tk.Label(master=leader_board, text=ldr6_text.get(), bg="#d9d9d9", font=("ariel", 26, "bold"), justify=tk.LEFT)
         ldr6.place(relx=0.2, rely=0.7)
@@ -431,7 +431,7 @@ class PythonQuiz(): # Class is created to efficiently create and destroy new scr
                 opt3.config(value = opt3_text.get(), textvariable=opt3_text, variable=val)
                 opt4.config(value = opt4_text.get(), textvariable=opt4_text, variable=val)
                 val.set(None)
-                qno.set("Q: "+str(self.indx+1))
+                qno.set("Q: "+str(self.indx+1)+"/"+str(len(questions)))
                 score.set("Score: "+str(self.scr))
             else:
                 ans_fb.set("Answer: "+questions[self.indx][1])
@@ -447,7 +447,7 @@ class PythonQuiz(): # Class is created to efficiently create and destroy new scr
                 opt2.config(value = opt2_text.get(), textvariable=opt2_text, variable=val)
                 opt3.config(value = opt3_text.get(), textvariable=opt3_text, variable=val)
                 opt4.config(value = opt4_text.get(), textvariable=opt4_text, variable=val)
-                qno.set("Q: "+str(self.indx+1))
+                qno.set("Q: "+str(self.indx+1)+"/"+str(len(questions)))
 
 
         def check_answer():     # Checks the answer and provides feedback
@@ -481,12 +481,13 @@ class PythonQuiz(): # Class is created to efficiently create and destroy new scr
         score_text.place(relx=0.9, rely=0.05, anchor=tk.CENTER)
         
         qno = tk.StringVar()
-        qno.set("Q: "+str(self.indx+1))
+        qno.set("Q: "+str(self.indx+1)+"/"+str(len(questions)))
         qno_text = tk.Label(master=main_quiz, textvariable=qno, font=("ariel", 22, "bold"), bg="#d9d9d9")
-        qno_text.place(relx=0.1, rely=0.05, anchor=tk.W)
+        qno_text.place(relx=0.1, rely=0.2, anchor=tk.NE)
 
+        # Quit button
         quit_btn = tk.Button(master=main_quiz, text="Quit", width=10, font=("ariel", 16, "bold"), command=self.quit_screen)
-        quit_btn.place(relx=0.1, rely=0.9, anchor=tk.CENTER)     
+        quit_btn.place(relx=0.1, rely=0.1, anchor=tk.CENTER)     
 
         question_text = tk.StringVar()
         question_text.set(questions[self.indx][0])
@@ -520,8 +521,10 @@ class PythonQuiz(): # Class is created to efficiently create and destroy new scr
         next_btn.place(relx=0.9, rely=0.9, anchor=tk.CENTER)
 
         # Check Answer Button
+        
         check_btn = tk.Button(master=main_quiz, text="Check", font=("ariel", 18, ), command=check_answer)
-        check_btn.place(relx=0.05, rely=0.5, anchor=tk.CENTER)
+        check_btn.place(relx=0.1, rely=0.9, anchor=tk.CENTER)
+        
 
         # Answer feedback
         ans_fb = tk.StringVar()

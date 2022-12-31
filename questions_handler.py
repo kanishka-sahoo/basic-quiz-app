@@ -6,8 +6,9 @@ def get_data(parameters):
     question_data = response.json()["results"] # Gets the data as a json object
     return process_questions(question_data)
 
-# Index of all the categories available on opentdb.com
+# Index of soem of the categories available on opentdb.com
 CATEGORIES = {
+    "Entertainment: Books": 10,
     "Entertainment: Music" : 12,
     "Entertainment: Television" : 14,
     "Entertainment: Video Games" : 15,
@@ -15,6 +16,7 @@ CATEGORIES = {
     "Science: Computers" : 18,
     "Science: Mathematics" : 19,
     "Sports": 21,
+    "Geography": 22,
     "History": 23,
     "Politics": 24,
     "Celebrities": 26,
