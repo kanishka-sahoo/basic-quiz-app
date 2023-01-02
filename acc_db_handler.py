@@ -43,7 +43,7 @@ def get_leaderboard(usnm):
     leaderboard = []
     conn = sqlite3.connect('accounts.db')
     c = conn.cursor()
-    c.execute("SELECT * FROM users ORDER BY total_questions DESC, score DESC")
+    c.execute("SELECT * FROM users ORDER BY score DESC, total_questions ASC")
     result = c.fetchall()
     length = len(result)
     leaderboard = result[:min(5, length):]

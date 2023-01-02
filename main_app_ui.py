@@ -4,6 +4,7 @@ Author: Kanishka Sahoo (Code Ninjas)
 Date: 2022/11/30
 '''
 
+SIZE = (1280, 720)
 import tkinter as tk
 import acc_db_handler as adh    # Account Database Handler, communicates with the database of users
 import questions_handler as qh  # Obtains quiz questions from internet and parses them into a usable form
@@ -12,7 +13,7 @@ class PythonQuiz(): # Class is created to efficiently create and destroy new scr
     def __init__(self, master) -> None:
         self.master = master
         self.master.title("Python Quiz")    # Add the title of the app
-        self.master.geometry("1280x720")    # Specify the resolution as beimg 1280 by 720 pixels    
+        self.master.geometry(f"{SIZE[0]}x{SIZE[1]}")    # Specify the resolution as beimg 1280 by 720 pixels    
         self.master.resizable(False, False) # Disables the resize of the window to avoid some parts being cut off
         self.scr = 0
         self.indx = 0
@@ -25,7 +26,7 @@ class PythonQuiz(): # Class is created to efficiently create and destroy new scr
             i.destroy()
         
         # Create a fframe on which the UI is placed to allow for custom background
-        reg_login = tk.Frame(master=self.master, background="#d9d9d9", width=1280, height=720)
+        reg_login = tk.Frame(master=self.master, background="#d9d9d9", width=SIZE[0], height=SIZE[1])
         reg_login.grid(row=128, column=70, sticky="NW")
         reg_login.place(x=0, y=0)
 
@@ -81,7 +82,7 @@ class PythonQuiz(): # Class is created to efficiently create and destroy new scr
                 adh.register_user(usnm=usnm, pswd=pswd)
                 self.login()
                 
-        reg_page = tk.Frame(master=self.master, background="#d9d9d9", width=1280, height=720)
+        reg_page = tk.Frame(master=self.master, background="#d9d9d9", width=SIZE[0], height=SIZE[1])
         reg_page.grid(row=128, column=70, sticky="NW")
         reg_page.place(x=0, y=0)
 
@@ -91,7 +92,7 @@ class PythonQuiz(): # Class is created to efficiently create and destroy new scr
 
         # Password hints
         pswd_hint_text = """Please use a username with 6 or more characters, having only alphabets and numbers\nPassword must contain minimum 6 characters with one special character"""
-        pswd_hint = tk.Label(master=reg_page, text=pswd_hint_text, font=("ariel", 14, "bold"), bg="#d9d9d9", justify=tk.LEFT, wraplength=500)
+        pswd_hint = tk.Label(master=reg_page, text=pswd_hint_text, font=("ariel", 14, "italic"), bg="#d9d9d9", justify=tk.LEFT, wraplength=500)
         pswd_hint.place(relx=0.28, rely=0.8)
 
         # username field
@@ -153,7 +154,7 @@ class PythonQuiz(): # Class is created to efficiently create and destroy new scr
                 pswd.config(show='•')
         
         # Create frame to cover the screen
-        login_body = tk.Frame(master=self.master, background="#d9d9d9", width=1280, height=720)
+        login_body = tk.Frame(master=self.master, background="#d9d9d9", width=SIZE[0], height=SIZE[1])
         login_body.grid(row=128, column=70, sticky="NW")
         login_body.place(x=0, y=0)
 
@@ -195,7 +196,7 @@ class PythonQuiz(): # Class is created to efficiently create and destroy new scr
         for i in self.master.winfo_children():
             i.destroy()
         
-        credits_body = tk.Frame(master=self.master, background="#d9d9d9", width=1280, height=720)
+        credits_body = tk.Frame(master=self.master, background="#d9d9d9", width=SIZE[0], height=SIZE[1])
         credits_body.grid(row=128, column=70, sticky="NW")
         credits_body.place(x=0, y=0)
 
@@ -236,7 +237,7 @@ class PythonQuiz(): # Class is created to efficiently create and destroy new scr
         def do_logout():    # Logs out the user
             self.reg_or_login()
         
-        main_screen_body = tk.Frame(master=self.master, background="#d9d9d9", width=1280, height=720)
+        main_screen_body = tk.Frame(master=self.master, background="#d9d9d9", width=SIZE[0], height=SIZE[1])
         main_screen_body.grid(row=128, column=70, sticky="NW")
         main_screen_body.place(x=0, y=0)
 
@@ -323,7 +324,7 @@ class PythonQuiz(): # Class is created to efficiently create and destroy new scr
         
         lbrd, user, pos = adh.get_leaderboard(usnm)
 
-        leader_board = tk.Frame(master=self.master, background="#d9d9d9", width=1280, height=720)
+        leader_board = tk.Frame(master=self.master, background="#d9d9d9", width=SIZE[0], height=SIZE[1])
         leader_board.grid(row=128, column=70, sticky="NW")
         leader_board.place(x=0, y=0)
 
@@ -381,14 +382,14 @@ class PythonQuiz(): # Class is created to efficiently create and destroy new scr
         ldr6.place(relx=0.2, rely=0.7)
 
         # some additional info
-        addn_info = tk.Label(master=leader_board, text="Note: Only the first 5 places, along with your score are displayed.", bg="#d9d9d9", font=("ariel", 22, "italic"), justify=tk.LEFT)
+        addn_info = tk.Label(master=leader_board, text="Note: Only the first 5 places, along with your score are displayed.", bg="#d9d9d9", font=("ariel", 14, "italic"), justify=tk.LEFT)
         addn_info.place(relx=0.2, rely=0.9)
 
     def staging_area(self):   # Where rules are explained
         def goback():
             staging_area.destroy()
                 
-        staging_area = tk.Frame(master=self.master, background="#d9d9d9", width=1280, height=720)
+        staging_area = tk.Frame(master=self.master, background="#d9d9d9", width=SIZE[0], height=SIZE[1])
         staging_area.grid(row=128, column=70, sticky="NW")
         staging_area.place(x=0, y=0)
 
@@ -471,7 +472,7 @@ class PythonQuiz(): # Class is created to efficiently create and destroy new scr
         # Gets the question data from the api in a formatted manner
 
         questions = qh.get_data(parameters)
-        main_quiz = tk.Frame(master=self.master, background="#d9d9d9", width=1280, height=720)
+        main_quiz = tk.Frame(master=self.master, background="#d9d9d9", width=SIZE[0], height=SIZE[1])
         main_quiz.grid(row=128, column=70, sticky="NW")
         main_quiz.place(x=0, y=0)
 
@@ -491,7 +492,7 @@ class PythonQuiz(): # Class is created to efficiently create and destroy new scr
 
         # Quit button
         quit_btn = tk.Button(master=main_quiz, text="Quit", width=10, font=("ariel", 16, "bold"), command=self.quit_screen)
-        quit_btn.place(relx=0.1, rely=0.1, anchor=tk.CENTER)     
+        quit_btn.place(relx=0.1, rely=0.05, anchor=tk.CENTER)     
 
         question_text = tk.StringVar()
         question_text.set(questions[self.indx][0])
@@ -543,7 +544,7 @@ class PythonQuiz(): # Class is created to efficiently create and destroy new scr
         def goback():
             q_scr.destroy()
         
-        q_scr = tk.Frame(master=self.master, background="#d9d9d9", width=1280, height=720)
+        q_scr = tk.Frame(master=self.master, background="#d9d9d9", width=SIZE[0], height=SIZE[1])
         q_scr.grid(row=128, column=70, sticky="NW")
         q_scr.place(x=0, y=0)
 
@@ -560,7 +561,7 @@ class PythonQuiz(): # Class is created to efficiently create and destroy new scr
         for i in self.master.winfo_children():
             i.destroy()
 
-        end_scr = tk.Frame(master=self.master, background="#d9d9d9", width=1280, height=720)
+        end_scr = tk.Frame(master=self.master, background="#d9d9d9", width=SIZE[0], height=SIZE[1])
         end_scr.grid(row=128, column=70, sticky="NW")
         end_scr.place(x=0, y=0)
 
