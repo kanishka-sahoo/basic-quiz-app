@@ -380,6 +380,10 @@ class PythonQuiz(): # Class is created to efficiently create and destroy new scr
         ldr6 = tk.Label(master=leader_board, text=ldr6_text.get(), bg="#d9d9d9", font=("ariel", 26, "bold"), justify=tk.LEFT)
         ldr6.place(relx=0.2, rely=0.7)
 
+        # some additional info
+        addn_info = tk.Label(master=leader_board, text="Note: Only the first 5 places, along with your score are displayed.", bg="#d9d9d9", font=("ariel", 22, "italic"), justify=tk.LEFT)
+        addn_info.place(relx=0.2, rely=0.9)
+
     def staging_area(self):   # Where rules are explained
         def goback():
             staging_area.destroy()
@@ -560,7 +564,7 @@ class PythonQuiz(): # Class is created to efficiently create and destroy new scr
         end_scr.grid(row=128, column=70, sticky="NW")
         end_scr.place(x=0, y=0)
 
-        end_title = tk.Label(master=end_scr, text="Quiz Completed", font=("ariel", 32, ), bg="#d9d9d9", justify=tk.LEFT)
+        end_title = tk.Label(master=end_scr, text="Quiz Completed!", font=("ariel", 32, ), bg="#d9d9d9", justify=tk.LEFT)
         end_title.place(relx=0.5, rely=0.1, anchor=tk.CENTER)
 
         scr_lbl = tk.Label(master=end_scr, text=f"Score: {self.scr}/{tot_qns}", font=("ariel", 28, ), bg="#d9d9d9", justify=tk.LEFT)

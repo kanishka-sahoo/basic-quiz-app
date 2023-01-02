@@ -1,3 +1,7 @@
+"""
+Account Database Handler:
+Interfaces with the accounts.db database and provides an intermediate layer between app and db.
+"""
 import hashlib as hl
 import sqlite3
 import time
@@ -35,17 +39,14 @@ def is_user_present(usnm):
     else:
         return False
 
-
 def get_leaderboard(usnm):
     leaderboard = []
     conn = sqlite3.connect('accounts.db')
     c = conn.cursor()
     c.execute("SELECT * FROM users ORDER BY total_questions DESC, score DESC")
     result = c.fetchall()
-    print(result)
     length = len(result)
     leaderboard = result[:min(5, length):]
-    print(leaderboard)
     c.execute("SELECT * FROM users WHERE username=?", (usnm, ))
     user = c.fetchone()
     leaderboard = list(dict.fromkeys(leaderboard))
@@ -59,7 +60,6 @@ def update_score(usnm, score, tot_qns):
     row = c.fetchone()
     c.execute("UPDATE users SET score=?, total_questions=? WHERE username=?", (score+int(row[2]), tot_qns+int(row[3]), usnm))
     result = c.fetchall()
-    print(result)
     conn.commit()
     conn.close()
 

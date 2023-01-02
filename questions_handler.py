@@ -1,3 +1,10 @@
+"""
+Questions Handler:
+Accesses the opentdb.com api and gets the questions as per specifications
+Contains a list of categories and their ids available
+Shuffles the questions and their options collected.
+"""
+
 import requests, html
 import random as rd
 
