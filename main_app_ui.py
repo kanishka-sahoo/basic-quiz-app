@@ -1,5 +1,5 @@
 '''
-Tkinter App
+Python Quiz Game using tkinter, requests, random as default modules along with custom acc_db_handler and questions_handler
 Author: Kanishka Sahoo (Code Ninjas)
 Date: 2022/11/30
 '''

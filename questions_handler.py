@@ -1,7 +1,7 @@
 """
 Questions Handler:
-Accesses the opentdb.com api and gets the questions as per specifications
-Contains a list of categories and their ids available
+Accesses the opentdb.com api and gets the questions as per specifications.\n
+Contains a list of categories and their ids available.\n
 Shuffles the questions and their options collected.
 """
 
