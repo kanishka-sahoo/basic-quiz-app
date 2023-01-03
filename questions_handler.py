@@ -9,11 +9,17 @@ import requests, html
 import random as rd
 
 def get_data(parameters):
-    response = requests.get(url="https://opentdb.com/api.php", params=parameters)
+    # Check fot internet access and handle eventual error by returning string
+    try:
+        response = requests.get(url="https://opentdb.com/api.php", params=parameters)
+    except requests.exceptions.ConnectionError:
+        return "NoInternetError"
+
+    # Parse the request data into a JSON format
     question_data = response.json()["results"] # Gets the data as a json object
     return process_questions(question_data)
 
-# Index of soem of the categories available on opentdb.com
+# Index of some of the categories available on opentdb.com giving the name and number
 CATEGORIES = {
     "Entertainment: Books": 10,
     "Entertainment: Music" : 12,
@@ -32,10 +38,10 @@ CATEGORIES = {
     "Entertainment: Japanese Anime & Manga": 31
 }
 
-def get_category(stri):
+def get_category(stri): # Returns category number of category
     return CATEGORIES[stri]
 
-def process_questions(question_data):
+def process_questions(question_data):   # Converts given JSON question format into a nested list
     question_bank = []
     for question in question_data:
         choices = []

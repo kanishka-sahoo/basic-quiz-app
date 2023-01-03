@@ -178,7 +178,7 @@ class PythonQuiz(): # Class is created to efficiently create and destroy new scr
 
         # Show/Hide Password
         tog_pwd = tk.Button(master=login_body, text='👁', font=("ariel", 16, "bold"), bg="#d9d9d9", command=toggle_pswd, width=3)
-        tog_pwd.place(relx = 0.67, rely=0.45, anchor=tk.W)
+        tog_pwd.place(relx = 0.665, rely=0.45, anchor=tk.W)
 
         # Login Button
         login_btn = tk.Button(master=login_body, text="Login", width=10, font=("ariel", 16, "bold"), command=validateLogin)
@@ -472,69 +472,72 @@ class PythonQuiz(): # Class is created to efficiently create and destroy new scr
         # Gets the question data from the api in a formatted manner
 
         questions = qh.get_data(parameters)
-        main_quiz = tk.Frame(master=self.master, background="#d9d9d9", width=SIZE[0], height=SIZE[1])
-        main_quiz.grid(row=128, column=70, sticky="NW")
-        main_quiz.place(x=0, y=0)
+        if type(questions) == str:
+            self.NoInternet()
+        else:
+            main_quiz = tk.Frame(master=self.master, background="#d9d9d9", width=SIZE[0], height=SIZE[1])
+            main_quiz.grid(row=128, column=70, sticky="NW")
+            main_quiz.place(x=0, y=0)
 
-        quiz_title = tk.Label(master=main_quiz, text=f"{self.sel_cat.get()}, {self.sel_diff.get()}", font=("ariel", 22, "bold"), bg="#d9d9d9")
-        quiz_title.place(relx=0.5, rely=0.05, anchor=tk.CENTER)
-        
-        score = tk.StringVar()
-        score.set("Score: "+str(self.scr))
+            quiz_title = tk.Label(master=main_quiz, text=f"{self.sel_cat.get()}, {self.sel_diff.get()}", font=("ariel", 22, "bold"), bg="#d9d9d9")
+            quiz_title.place(relx=0.5, rely=0.05, anchor=tk.CENTER)
+            
+            score = tk.StringVar()
+            score.set("Score: "+str(self.scr))
 
-        score_text = tk.Label(master=main_quiz, textvariable=score, font=("ariel", 22, "bold"), bg="#d9d9d9")
-        score_text.place(relx=0.9, rely=0.05, anchor=tk.CENTER)
-        
-        qno = tk.StringVar()
-        qno.set("Q: "+str(self.indx+1)+"/"+str(len(questions)))
-        qno_text = tk.Label(master=main_quiz, textvariable=qno, font=("ariel", 22, "bold"), bg="#d9d9d9")
-        qno_text.place(relx=0.1, rely=0.2, anchor=tk.NE)
+            score_text = tk.Label(master=main_quiz, textvariable=score, font=("ariel", 22, "bold"), bg="#d9d9d9")
+            score_text.place(relx=0.9, rely=0.05, anchor=tk.CENTER)
+            
+            qno = tk.StringVar()
+            qno.set("Q: "+str(self.indx+1)+"/"+str(len(questions)))
+            qno_text = tk.Label(master=main_quiz, textvariable=qno, font=("ariel", 22, "bold"), bg="#d9d9d9")
+            qno_text.place(relx=0.1, rely=0.2, anchor=tk.NE)
 
-        # Quit button
-        quit_btn = tk.Button(master=main_quiz, text="Quit", width=10, font=("ariel", 16, "bold"), command=self.quit_screen)
-        quit_btn.place(relx=0.1, rely=0.05, anchor=tk.CENTER)     
+            # Quit button
+            quit_btn = tk.Button(master=main_quiz, text="Quit", width=10, font=("ariel", 16, "bold"), command=self.quit_screen)
+            quit_btn.place(relx=0.1, rely=0.05, anchor=tk.CENTER)     
 
-        question_text = tk.StringVar()
-        question_text.set(questions[self.indx][0])
+            question_text = tk.StringVar()
+            question_text.set(questions[self.indx][0])
 
-        question_ = tk.Label(master=main_quiz, textvariable=question_text, font=("ariel", 22, ), bg="#d9d9d9", justify=tk.LEFT, wraplength=1000)
-        question_.place(relx=0.15, rely=0.2, anchor=tk.NW)
+            question_ = tk.Label(master=main_quiz, textvariable=question_text, font=("ariel", 22, ), bg="#d9d9d9", justify=tk.LEFT, wraplength=1000)
+            question_.place(relx=0.15, rely=0.2, anchor=tk.NW)
 
-        # Add options  
+            # Add options  
 
-        val = tk.StringVar()
-        val.set(None)
-        opt1_text = tk.StringVar()
-        opt1_text.set(questions[self.indx][2][0])
-        opt1 = tk.Radiobutton(master=main_quiz, textvariable=opt1_text, value=opt1_text.get(), variable = val,font=("ariel", 22, ), bg="#d9d9d9", justify=tk.LEFT)
-        opt1.place(relx=0.15, rely=0.4) 
-        opt2_text = tk.StringVar()
-        opt2_text.set(questions[self.indx][2][1])
-        opt2 = tk.Radiobutton(master=main_quiz, textvariable=opt2_text, value=opt2_text.get(), variable = val,font=("ariel", 22, ), bg="#d9d9d9", justify=tk.LEFT)
-        opt2.place(relx=0.15, rely=0.5)            
-        opt3_text = tk.StringVar()
-        opt3_text.set(questions[self.indx][2][2])
-        opt3 = tk.Radiobutton(master=main_quiz, textvariable=opt3_text, value=opt3_text.get(), variable = val,font=("ariel", 22, ), bg="#d9d9d9", justify=tk.LEFT)
-        opt3.place(relx=0.15, rely=0.6)        
-        opt4_text = tk.StringVar()
-        opt4_text.set(questions[self.indx][2][3])
-        opt4 = tk.Radiobutton(master=main_quiz, textvariable=opt4_text, value=opt4_text.get(), variable = val,font=("ariel", 22, ), bg="#d9d9d9", justify=tk.LEFT)
-        opt4.place(relx=0.15, rely=0.7)   
+            val = tk.StringVar()
+            val.set(None)
+            opt1_text = tk.StringVar()
+            opt1_text.set(questions[self.indx][2][0])
+            opt1 = tk.Radiobutton(master=main_quiz, textvariable=opt1_text, value=opt1_text.get(), variable = val,font=("ariel", 22, ), bg="#d9d9d9", justify=tk.LEFT)
+            opt1.place(relx=0.15, rely=0.4) 
+            opt2_text = tk.StringVar()
+            opt2_text.set(questions[self.indx][2][1])
+            opt2 = tk.Radiobutton(master=main_quiz, textvariable=opt2_text, value=opt2_text.get(), variable = val,font=("ariel", 22, ), bg="#d9d9d9", justify=tk.LEFT)
+            opt2.place(relx=0.15, rely=0.5)            
+            opt3_text = tk.StringVar()
+            opt3_text.set(questions[self.indx][2][2])
+            opt3 = tk.Radiobutton(master=main_quiz, textvariable=opt3_text, value=opt3_text.get(), variable = val,font=("ariel", 22, ), bg="#d9d9d9", justify=tk.LEFT)
+            opt3.place(relx=0.15, rely=0.6)        
+            opt4_text = tk.StringVar()
+            opt4_text.set(questions[self.indx][2][3])
+            opt4 = tk.Radiobutton(master=main_quiz, textvariable=opt4_text, value=opt4_text.get(), variable = val,font=("ariel", 22, ), bg="#d9d9d9", justify=tk.LEFT)
+            opt4.place(relx=0.15, rely=0.7)   
 
-        # Next button
-        next_btn = tk.Button(master=main_quiz, text="Next", font=("ariel", 18, ), command=next_question)
-        next_btn.place(relx=0.9, rely=0.9, anchor=tk.CENTER)
+            # Next button
+            next_btn = tk.Button(master=main_quiz, text="Next", font=("ariel", 18, ), command=next_question)
+            next_btn.place(relx=0.9, rely=0.9, anchor=tk.CENTER)
 
-        # Check Answer Button
-        
-        check_btn = tk.Button(master=main_quiz, text="Check", font=("ariel", 18, ), command=check_answer)
-        check_btn.place(relx=0.1, rely=0.9, anchor=tk.CENTER)
-        
+            # Check Answer Button
+            
+            check_btn = tk.Button(master=main_quiz, text="Check", font=("ariel", 18, ), command=check_answer)
+            check_btn.place(relx=0.1, rely=0.9, anchor=tk.CENTER)
+            
 
-        # Answer feedback
-        ans_fb = tk.StringVar()
-        ans_txt = tk.Label(master=main_quiz, textvariable=ans_fb, font=("ariel", 22, ), bg="#d9d9d9", justify=tk.LEFT)
-        ans_txt.place(relx=0.5, rely=0.9, anchor=tk.CENTER)
+            # Answer feedback
+            ans_fb = tk.StringVar()
+            ans_txt = tk.Label(master=main_quiz, textvariable=ans_fb, font=("ariel", 22, ), bg="#d9d9d9", justify=tk.LEFT)
+            ans_txt.place(relx=0.5, rely=0.9, anchor=tk.CENTER)
     
     def quit_screen(self):
 
@@ -578,6 +581,20 @@ class PythonQuiz(): # Class is created to efficiently create and destroy new scr
         mainmenu_btn.place(relx=0.5, rely=0.6, anchor=tk.CENTER)
 
         adh.update_score(score=self.scr, tot_qns=self.indx+1, usnm=self.usr[0])
+    
+    def NoInternet(self):   # Displays if internet is absent
+        for i in self.master.winfo_children():
+            i.destroy()
+
+        no_internet = tk.Frame(master=self.master, background="#d9d9d9", width=SIZE[0], height=SIZE[1])
+        no_internet.grid(row=128, column=70, sticky="NW")
+        no_internet.place(x=0, y=0)
+
+        end_title = tk.Label(master=no_internet, text="Sorry, No Internet Access", font=("ariel", 32, ), bg="#d9d9d9", justify=tk.LEFT)
+        end_title.place(relx=0.5, rely=0.1, anchor=tk.CENTER)
+
+        mainmenu_btn = tk.Button(master=no_internet, text="Main Menu", width=20, font=("ariel", 16, "bold"), command=self.main_screen)
+        mainmenu_btn.place(relx=0.5, rely=0.6, anchor=tk.CENTER)
 
 # Run the actual app
 root = tk.Tk()
