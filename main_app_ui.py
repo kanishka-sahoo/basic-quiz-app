@@ -17,6 +17,7 @@ class PythonQuiz(): # Class is created to efficiently create and destroy new scr
         self.master.resizable(False, False) # Disables the resize of the window to avoid some parts being cut off
         self.scr = 0
         self.indx = 0
+        self.master.iconphoto(False, tk.PhotoImage(file="logo.png"))
         self.reg_or_login() # Initialises the program on the opening page
 
 
@@ -416,6 +417,7 @@ class PythonQuiz(): # Class is created to efficiently create and destroy new scr
             i.destroy()
         
         self.indx = 0   # Sets question number index to zero to show first question
+        self.scr = 0
 
         def next_question():    # updates the question and options during the quiz
             print(questions[self.indx][1], " : ", val.get())
