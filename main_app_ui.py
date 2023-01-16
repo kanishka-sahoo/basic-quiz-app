@@ -27,7 +27,7 @@ class PythonQuiz(): # Class is created to efficiently create and destroy new scr
             i.destroy()
         
         # Create a fframe on which the UI is placed to allow for custom background
-        reg_login = tk.Frame(master=self.master, background="#d9d9d9", width=SIZE[0], height=SIZE[1])
+        reg_login = tk.Frame(master=self.master, background="#d9d9d9", width=self.master.winfo_width(), height=self.master.winfo_height())
         reg_login.grid(row=128, column=70, sticky="NW")
         reg_login.place(x=0, y=0)
 
@@ -83,7 +83,7 @@ class PythonQuiz(): # Class is created to efficiently create and destroy new scr
                 adh.register_user(usnm=usnm, pswd=pswd)
                 self.login()
                 
-        reg_page = tk.Frame(master=self.master, background="#d9d9d9", width=SIZE[0], height=SIZE[1])
+        reg_page = tk.Frame(master=self.master, background="#d9d9d9", width=self.master.winfo_width(), height=self.master.winfo_height())
         reg_page.grid(row=128, column=70, sticky="NW")
         reg_page.place(x=0, y=0)
 
@@ -155,7 +155,7 @@ class PythonQuiz(): # Class is created to efficiently create and destroy new scr
                 pswd.config(show='•')
         
         # Create frame to cover the screen
-        login_body = tk.Frame(master=self.master, background="#d9d9d9", width=SIZE[0], height=SIZE[1])
+        login_body = tk.Frame(master=self.master, background="#d9d9d9", width=self.master.winfo_width(), height=self.master.winfo_height())
         login_body.grid(row=128, column=70, sticky="NW")
         login_body.place(x=0, y=0)
 
@@ -197,7 +197,7 @@ class PythonQuiz(): # Class is created to efficiently create and destroy new scr
         for i in self.master.winfo_children():
             i.destroy()
         
-        credits_body = tk.Frame(master=self.master, background="#d9d9d9", width=SIZE[0], height=SIZE[1])
+        credits_body = tk.Frame(master=self.master, background="#d9d9d9", width=self.master.winfo_width(), height=self.master.winfo_height())
         credits_body.grid(row=128, column=70, sticky="NW")
         credits_body.place(x=0, y=0)
 
@@ -238,7 +238,7 @@ class PythonQuiz(): # Class is created to efficiently create and destroy new scr
         def do_logout():    # Logs out the user
             self.reg_or_login()
         
-        main_screen_body = tk.Frame(master=self.master, background="#d9d9d9", width=SIZE[0], height=SIZE[1])
+        main_screen_body = tk.Frame(master=self.master, background="#d9d9d9", width=self.master.winfo_width(), height=self.master.winfo_height())
         main_screen_body.grid(row=128, column=70, sticky="NW")
         main_screen_body.place(x=0, y=0)
 
@@ -325,7 +325,7 @@ class PythonQuiz(): # Class is created to efficiently create and destroy new scr
         
         lbrd, user, pos = adh.get_leaderboard(usnm)
 
-        leader_board = tk.Frame(master=self.master, background="#d9d9d9", width=SIZE[0], height=SIZE[1])
+        leader_board = tk.Frame(master=self.master, background="#d9d9d9", width=self.master.winfo_width(), height=self.master.winfo_height())
         leader_board.grid(row=128, column=70, sticky="NW")
         leader_board.place(x=0, y=0)
 
@@ -390,7 +390,7 @@ class PythonQuiz(): # Class is created to efficiently create and destroy new scr
         def goback():
             staging_area.destroy()
                 
-        staging_area = tk.Frame(master=self.master, background="#d9d9d9", width=SIZE[0], height=SIZE[1])
+        staging_area = tk.Frame(master=self.master, background="#d9d9d9", width=self.master.winfo_width(), height=self.master.winfo_height())
         staging_area.grid(row=128, column=70, sticky="NW")
         staging_area.place(x=0, y=0)
 
@@ -477,7 +477,7 @@ class PythonQuiz(): # Class is created to efficiently create and destroy new scr
         if type(questions) == str:
             self.NoInternet()
         else:
-            main_quiz = tk.Frame(master=self.master, background="#d9d9d9", width=SIZE[0], height=SIZE[1])
+            main_quiz = tk.Frame(master=self.master, background="#d9d9d9", width=self.master.winfo_width(), height=self.master.winfo_height())
             main_quiz.grid(row=128, column=70, sticky="NW")
             main_quiz.place(x=0, y=0)
 
@@ -549,7 +549,7 @@ class PythonQuiz(): # Class is created to efficiently create and destroy new scr
         def goback():
             q_scr.destroy()
         
-        q_scr = tk.Frame(master=self.master, background="#d9d9d9", width=SIZE[0], height=SIZE[1])
+        q_scr = tk.Frame(master=self.master, background="#d9d9d9", width=self.master.winfo_width(), height=self.master.winfo_height())
         q_scr.grid(row=128, column=70, sticky="NW")
         q_scr.place(x=0, y=0)
 
@@ -566,7 +566,7 @@ class PythonQuiz(): # Class is created to efficiently create and destroy new scr
         for i in self.master.winfo_children():
             i.destroy()
 
-        end_scr = tk.Frame(master=self.master, background="#d9d9d9", width=SIZE[0], height=SIZE[1])
+        end_scr = tk.Frame(master=self.master, background="#d9d9d9", width=self.master.winfo_width(), height=self.master.winfo_height())
         end_scr.grid(row=128, column=70, sticky="NW")
         end_scr.place(x=0, y=0)
 
@@ -588,7 +588,7 @@ class PythonQuiz(): # Class is created to efficiently create and destroy new scr
         for i in self.master.winfo_children():
             i.destroy()
 
-        no_internet = tk.Frame(master=self.master, background="#d9d9d9", width=SIZE[0], height=SIZE[1])
+        no_internet = tk.Frame(master=self.master, background="#d9d9d9", width=self.master.winfo_width(), height=self.master.winfo_height())
         no_internet.grid(row=128, column=70, sticky="NW")
         no_internet.place(x=0, y=0)
 
