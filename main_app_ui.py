@@ -205,7 +205,7 @@ class PythonQuiz(): # Class is created to efficiently create and destroy new scr
         cred_title = tk.Label(master=credits_body, text="Credits", font=("ariel", 32, "bold"), bg="#d9d9d9")
         cred_title.place(relx=0.5, rely=0.1, anchor=tk.CENTER)
         # Text
-        credits_text = """Kanishka Sahoo: Pretty Much Everything\nBhuvan Anand: ?\nMadhav Nair: ?"""
+        credits_text = """Kanishka Sahoo: Login System and Main Screen\nBhuvan Anand: System to connect to API to get questions\nMadhav Nair: Leaderboard and Scoring System"""
         cred_text = tk.Label(master=credits_body, text=credits_text,font=("ariel", 24, ), bg="#d9d9d9", height=5, width=52)
         cred_text.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
 
@@ -476,6 +476,8 @@ class PythonQuiz(): # Class is created to efficiently create and destroy new scr
         questions = qh.get_data(parameters)
         if type(questions) == str:
             self.NoInternet()
+        elif len(questions) == 0:
+            self.QuestionsError()
         else:
             main_quiz = tk.Frame(master=self.master, background="#d9d9d9", width=self.master.winfo_width(), height=self.master.winfo_height())
             main_quiz.grid(row=128, column=70, sticky="NW")
@@ -531,10 +533,10 @@ class PythonQuiz(): # Class is created to efficiently create and destroy new scr
             next_btn.place(relx=0.9, rely=0.9, anchor=tk.CENTER)
 
             # Check Answer Button
-            
+            '''
             check_btn = tk.Button(master=main_quiz, text="Check", font=("ariel", 18, ), command=check_answer)
             check_btn.place(relx=0.1, rely=0.9, anchor=tk.CENTER)
-            
+            '''
 
             # Answer feedback
             ans_fb = tk.StringVar()
@@ -596,6 +598,20 @@ class PythonQuiz(): # Class is created to efficiently create and destroy new scr
         end_title.place(relx=0.5, rely=0.1, anchor=tk.CENTER)
 
         mainmenu_btn = tk.Button(master=no_internet, text="Main Menu", width=20, font=("ariel", 16, "bold"), command=self.main_screen)
+        mainmenu_btn.place(relx=0.5, rely=0.6, anchor=tk.CENTER)
+    
+    def QuestionsError(self):
+        for i in self.master.winfo_children():
+            i.destroy()
+
+        questions_error = tk.Frame(master=self.master, background="#d9d9d9", width=self.master.winfo_width(), height=self.master.winfo_height())
+        questions_error.grid(row=128, column=70, sticky="NW")
+        questions_error.place(x=0, y=0)
+
+        end_title = tk.Label(master=questions_error, text="There was some error in the questions", font=("ariel", 32, ), bg="#d9d9d9", justify=tk.LEFT)
+        end_title.place(relx=0.5, rely=0.1, anchor=tk.CENTER)
+
+        mainmenu_btn = tk.Button(master=questions_error, text="Main Menu", width=20, font=("ariel", 16, "bold"), command=self.main_screen)
         mainmenu_btn.place(relx=0.5, rely=0.6, anchor=tk.CENTER)
 
 # Run the actual app
