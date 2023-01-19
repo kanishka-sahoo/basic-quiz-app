@@ -6,8 +6,8 @@ import hashlib as hl
 import sqlite3
 import time
 
-def register_user(usnm, pswd):
-    pswd = hl.md5(pswd.encode()).hexdigest()    # Converts the password to md5 hash
+def register_user(usnm, pswd):  # add user data to table
+    pswd = hl.md5(pswd.encode()).hexdigest()    # Converts the password to md5 hash using hashlib
     time_create = time.time()
     conn = sqlite3.connect('accounts.db')
     c = conn.cursor()
@@ -16,7 +16,7 @@ def register_user(usnm, pswd):
     conn.commit()
     conn.close()
 
-def login_user(usnm, pswd):
+def login_user(usnm, pswd): # performs login of user by checking both username ans password
     pswd = hl.md5(pswd.encode()).hexdigest()
     conn = sqlite3.connect('accounts.db')
     c = conn.cursor()
@@ -28,7 +28,7 @@ def login_user(usnm, pswd):
     else:
         return False, result
 
-def is_user_present(usnm):
+def is_user_present(usnm):  # checks if user exists in table
     conn = sqlite3.connect('accounts.db')
     c = conn.cursor()
     c.execute("SELECT * FROM users WHERE username=?", (usnm, ))
@@ -39,7 +39,7 @@ def is_user_present(usnm):
     else:
         return False
 
-def get_leaderboard(usnm):
+def get_leaderboard(usnm):  # computes the rank of all users in table and returns top 5
     leaderboard = []
     conn = sqlite3.connect('accounts.db')
     c = conn.cursor()
@@ -53,7 +53,7 @@ def get_leaderboard(usnm):
     conn.close()
     return leaderboard, user, leaderboard.index(user)
 
-def update_score(usnm, score, tot_qns):
+def update_score(usnm, score, tot_qns): # changes score after completion of quiz
     conn = sqlite3.connect('accounts.db')
     c = conn.cursor()
     c.execute("SELECT * FROM users WHERE username=?", (usnm, ))
@@ -63,7 +63,7 @@ def update_score(usnm, score, tot_qns):
     conn.commit()
     conn.close()
 
-def get_user_details(usnm):
+def get_user_details(usnm): # just gets the user details given username
     conn = sqlite3.connect('accounts.db')
     c = conn.cursor()
     c.execute("SELECT * FROM users WHERE username=?", (usnm, ))
