@@ -1,5 +1,5 @@
-# 420s_python
-## Python mini project 1
+# basic-quiz-app
+## a sample quiz app meant for learning various modules like tkinter, requests, sqlite3, etc.
 
 To use the app, first run ```database_gen.py``` and then run ```main_app_ui.py```.
 
