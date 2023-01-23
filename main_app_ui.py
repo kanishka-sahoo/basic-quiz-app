@@ -1,6 +1,6 @@
 '''
 Python Quiz Game using tkinter, requests, random as default modules along with custom acc_db_handler and questions_handler
-Author: Kanishka Sahoo (Code Ninjas)
+Author: Kanishka Sahoo
 Date: 2022/11/30
 '''
 
@@ -205,7 +205,7 @@ class PythonQuiz(): # Class is created to efficiently create and destroy new scr
         cred_title = tk.Label(master=credits_body, text="Credits", font=("ariel", 32, "bold"), bg="#d9d9d9")
         cred_title.place(relx=0.5, rely=0.1, anchor=tk.CENTER)
         # Text
-        credits_text = """Kanishka Sahoo: Login System and Main Screen\nBhuvan Anand: System to connect to API to get questions\nMadhav Nair: Leaderboard and Scoring System"""
+        credits_text = """Kanishka Sahoo: Created App"""
         cred_text = tk.Label(master=credits_body, text=credits_text,font=("ariel", 24, ), bg="#d9d9d9", height=5, width=52)
         cred_text.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
 

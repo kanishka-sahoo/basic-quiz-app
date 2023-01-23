@@ -1,6 +1,7 @@
 """
 Account Database Handler:
 Interfaces with the accounts.db database and provides an intermediate layer between app and db.
+Author: Kanishka Sahoo
 """
 import hashlib as hl
 import sqlite3
